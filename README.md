@@ -4,20 +4,21 @@
   <a href="#requisitos-para-executar">Requisitos</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#como-executar">Como executar</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#autores">Autores</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#ferramentas">Ferramentas utilizadas</a>
+  <a href="#tecnologias">Tecnologias</a>
 </p>
 
 -   [Regras de negócio](https://difficult-baryonyx-f99.notion.site/Projeto-Empresarial-1ef26572b7b34692bc77b53d7141eda4)
 
 ## Requisitos para executar
 
--   [PHP ^8.0](https://www.php.net/downloads.php) instalado e configurado
+-   [PHP ^8.0](https://www.php.net/downloads.php) Instalado e configurado
 -   [Composer](https://getcomposer.org/download/)
 -   Para rodar ambiente de desenvolvimento com Laravel Sail
-    -   [WSL2](https://docs.microsoft.com/pt-br/windows/wsl/install) - se estiver no Windows
+    -   [WSL2](https://docs.microsoft.com/pt-br/windows/wsl/install) - Se estiver no Windows
     -   [Docker](https://docs.docker.com/get-docker/)
 -   Se não for utilizar o Laravel Sail para rodar o projeto
     -   [MySQL 8.0](https://www.mysql.com/downloads/) Instalado e configurado corretamente para sua máquina
+    -   [NodeJS](https://nodejs.org/en/download/) - Utilize a versão LTS
 
 ## Como executar
 
@@ -62,7 +63,18 @@ composer install
         php artisan migrate
         ```
 
-6. ✅ Pronto!
+6. Compilar os assets para utilizar Bootstrap
+
+    - Com Sail
+        ```bash
+        ./vendor/bin/sail npm install && npm run dev
+        ```
+    - Com PHP Local
+        ```bash
+        npm install && npm run dev
+        ```
+
+7. ✅ Pronto!
     - Se estiver utilizando o Sail acesse: http://localhost
     - Senão, é só ligar o servidor embutido do PHP com `php artisan serve`
 
@@ -76,10 +88,11 @@ composer install
 -   [@marcelovins](https://github.com/marcelovins)
 -   [@Ton-devstart](https://github.com/minosdavi)
 
-## Ferramentas
+## Tecnologias
 
 -   [PHP](https://www.php.net/)
 -   [Composer](https://getcomposer.org/)
 -   [MySQL](https://www.mysql.com/)
 -   [Laravel](https://laravel.com/)
 -   [Docker](https://docker.com/)
+-   [NodeJS](https://nodejs.org/)
