@@ -23,11 +23,11 @@
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('/') ? 'active' : '' }}"
-                            href="{{ route('products') }}">Página incial</a>
+                            href="{{ route('index') }}">Página incial</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('produtos*') ? 'active' : '' }}"
-                            href="{{ route('index') }}">
+                            href="{{ route('products') }}">
                             Produtos
                         </a>
                     </li>

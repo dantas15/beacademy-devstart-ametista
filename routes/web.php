@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ViaCepController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,12 +15,8 @@ use App\Http\Controllers\ViaCepController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('index');
 
-
-Route::get('/users', [UserController::class, 'index'])->name('users.index');
-Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
-
-
-
-
+Route::get('/produtos', function () {
+    return view('products.list');
+})->name('products');
