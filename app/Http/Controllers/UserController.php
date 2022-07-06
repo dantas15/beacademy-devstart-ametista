@@ -2,44 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    // public function index() 
-    // {
-    //     $users = [
-    //         'nomes' => ['José Lira', 
-    //                     'Marcelo Almeida'
-    //         ]
-    //     ];
-
-    //     dd($users);
-    // }
-
-    public function show($id) 
+    /**
+     * Store a new flight in the database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        // $user = User::find($id);
+        $validator = $request->validate(User::$createRules);
 
-        // return $user;
+        if ($validator->fails()) {
+            return redirect('usuarios/criar')->withErrors($validator)->withInput();
+        }
 
-        if(!$user = User::find($id))
-            return \redirect()->route('users.index');
+        $validated = $validator->safe()->only([
+            'name',
+            'email',
+            'password',
+            'phone_number',
+            'birth_date',
+            'document_id',
+        ]);
 
-        return view('users.show', \compact('user'));
-        
-    }
+        $documentNumbers = preg_replace('/[^0-9]/', '', $validated->document_id);
+        if (strlen($documentNumbers) != 11 && strlen($documentNumbers) != 14) {
+            throw ValidationException::withMessages(['document_id' => 'Invalid document_id length']);
+        }
 
-    public function index() 
-    {
-        $users = User::all();
+        // TODO Verificar endereço
 
-        // dd($users);
-        return view('users.index', \compact('users'));
-
+        $user = new User();
     }
 }
-
-
-// php artisan optimize (para limpar cache)
