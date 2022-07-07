@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('produtos', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('categoria_id');
-            $table->foreign('categoria_id')->references('id')->on('categorias');
-            $table->string('nome');
-            $table->string('descricao');
-            $table->integer('quantidade');
-            $table->float('preco_de_custo', 8, 2);
-            $table->float('preco_de_venda', 8, 2);
-            $table->string('foto_principal');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('id')->on('categories');
+            $table->string('name');
+            $table->string('description');
+            $table->integer('amount');
+            $table->float('cost_price', 8, 2);
+            $table->float('sale_price', 8, 2);
+            $table->string('main_photo');
             $table->timestamps();
         });
     }
