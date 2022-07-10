@@ -52,24 +52,52 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function address()
+    public function addresses()
     {
-        return $this->hasOne(Address::class);
+        return $this->hasMany(Address::class);
     }
 
     public static $createRules = [
-        'name' => 'required|max:255',
-        'email' => 'required|max:255|email|unique:App\Models\User,email',
-        'password' => 'required|confirmed',
-        'phone_number' => 'required',
-        'birth_date' => 'required|date',
-        'document_id' => 'required|regex:([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})',
+        'name' => [
+            'required',
+            'max:255',
+        ],
+        'email' => [
+            'required',
+            'max:255',
+            'email',
+            'unique:App\Models\User,email',
+        ],
+        'password' => [
+            'required',
+            'confirmed',
+        ],
+        'phone_number' => ['required'],
+        'birth_date' => [
+            'required',
+            'date',
+        ],
+        'document_id' => [
+            'required',
+            'regex:([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})',
+        ],
     ];
 
     public static $updateRules = [
-        'name' => 'required|max:255',
-        'email' => 'required|max:255|email|unique:users,email',
-        'phone_number' => 'required',
-        'birth_date' => 'required|date',
+        'name' => [
+            'required',
+            'max:255',
+        ],
+        'email' => [
+            'required',
+            'max:255',
+            'email',
+            'unique:users,email',
+        ],
+        'phone_number' => ['required'],
+        'birth_date' => [
+            'required',
+            'date',
+        ],
     ];
 }
