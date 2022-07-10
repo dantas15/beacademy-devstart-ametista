@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     UserController,
-    ViaCepController
 };
 
 /*
@@ -26,6 +25,6 @@ Route::name('products')->get('/produtos', function () {
 });
 
 Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
-Route::get('/usuarios/create', [UserController::class, 'create'])->name('users.create');
+Route::get('/usuarios/criar', [UserController::class, 'create'])->name('users.create');
 Route::get('/usuarios/{id}', [UserController::class, 'show'])->name('users.show');
 Route::post('/usuarios', [UserController::class, 'store'])->name('users.store');
