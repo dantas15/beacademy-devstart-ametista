@@ -18,7 +18,6 @@
         </div>
         @enderror
 
-
         <div class="mb-3">
             <label for="document_id" class="form-label">Documento (CPF ou CNPJ)</label>
             <input type="text" class="form-control" id="document_id" name="document_id" required>
@@ -107,7 +106,5 @@
 
         <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
-
-
 
 @endsection

@@ -22,14 +22,14 @@ class UserController extends Controller
     {
         $users = User::all();
 
-        // dd($users);
-        return view('users.index', compact('users'));
-
+        return view('users.index', [
+            'users' => $users,
+        ]);
     }
 
     /**
      * @param $id
-     * @return
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|never
      */
     public function show($id)
     {
@@ -55,7 +55,7 @@ class UserController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $validator = Validator::make($request->all(), User::$createRules);
 
@@ -96,7 +96,24 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    public function edit(Request $request)
+    public function edit($id)
+    {
+        $user = User::find($id);
+
+        if (is_null($user)) {
+            return abort(404);
+        }
+
+        return view('users.edit', [
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|RedirectResponse
+     */
+    public function update(Request $request)
     {
         $validator = Validator::make($request->all(), User::$updateRules);
 

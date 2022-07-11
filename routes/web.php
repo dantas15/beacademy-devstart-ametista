@@ -24,8 +24,13 @@ Route::name('products')->get('/produtos', function () {
     return view('products.list');
 });
 
-Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
-Route::get('/usuarios/criar', [UserController::class, 'create'])->name('users.create');
-Route::get('/usuarios/{id}', [UserController::class, 'show'])->name('users.show');
-Route::post('/usuarios', [UserController::class, 'store'])->name('users.store');
-Route::put('/usuarios/{id}', [UserController::class, 'edit'])->name('users.edit');
+Route::prefix('usuarios')->name('users.')->group(function () {
+    Route::get('/', [UserController::class, 'index'])->name('index');
+    Route::get('/criar', [UserController::class, 'create'])->name('create');
+    Route::post('/', [UserController::class, 'store'])->name('store');
+
+    Route::get('/{id}', [UserController::class, 'show'])->name('show');
+
+    Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [UserController::class, 'update'])->name('update');
+});
