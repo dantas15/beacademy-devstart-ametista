@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\ProductsController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,3 +23,4 @@ Route::get('/produtos', function () {
 })->name('products');
 
 Route::resource('categories', CategoriesController::class);
+Route::resource('products', ProductsController::class);
