@@ -41,6 +41,7 @@ class UserController extends Controller
 
         return view('users.show', [
             'user' => $user,
+            'addresses' => $user->addresses,
         ]);
     }
 
@@ -116,8 +117,6 @@ class UserController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), User::$updateRules);
-
-//        dd($request->id);
 
         $user = User::find($request->id);
 

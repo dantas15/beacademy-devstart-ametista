@@ -104,7 +104,9 @@
         </div>
         @enderror
 
-        <button type="submit" class="btn btn-primary">Enviar</button>
+        <div class="d-flex flex-row-reverse w-100">
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </div>
     </form>
 
 @endsection

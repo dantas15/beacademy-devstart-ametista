@@ -3,10 +3,14 @@
 @section('content')
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Dados principais</a>
+            <a class="nav-link active" aria-current="page" href="{{ route('users.edit', ['id' => $user->id])}}">
+                Dados principais
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">Endereços</a>
+            <a class="nav-link" href="{{ route('users.addresses.index', ['userId' => $user->id]) }}">
+                Endereços
+            </a>
         </li>
     </ul>
     <hr class="mt-0 mb-4">
@@ -75,7 +79,9 @@
                 </div>
                 @enderror
 
-                <button type="submit" class="btn btn-primary">Enviar</button>
+                <div class="d-flex flex-row-reverse w-100">
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
             </form>
         </div>
     </div>

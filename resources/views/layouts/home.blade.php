@@ -41,7 +41,7 @@
             </div>
         </div>
     </nav>
-    <main class="w-100 min-h-100 bg-light">
+    <main class="w-100 min-h-100 bg-light my-5">
         <div class="container-sm bg-body">
             @yield('content')
         </div>

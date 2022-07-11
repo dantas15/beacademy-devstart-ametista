@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends Model
 {
@@ -32,11 +33,15 @@ class Address extends Model
         'number',
         'neighborhood',
         'complement',
+        'user_id'
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public static $createRules = [
@@ -46,12 +51,12 @@ class Address extends Model
         ],
         'uf' => [
             'required',
-            'digits:2',
+//            'digits:2',
         ],
         'city' => ['required'],
         'street' => ['required'],
         'number' => ['nullable'],
-        'neighborhood' => ['required'],
+        'neighborhood' => ['nullable'],
         'complement' => ['nullable'],
     ];
 
@@ -62,7 +67,7 @@ class Address extends Model
         ],
         'uf' => [
             'required',
-            'digits:2',
+//            'digits:2',
         ],
         'city' => ['required'],
         'street' => ['required'],
