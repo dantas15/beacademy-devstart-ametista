@@ -28,3 +28,4 @@ Route::get('/usuarios', [UserController::class, 'index'])->name('users.index');
 Route::get('/usuarios/criar', [UserController::class, 'create'])->name('users.create');
 Route::get('/usuarios/{id}', [UserController::class, 'show'])->name('users.show');
 Route::post('/usuarios', [UserController::class, 'store'])->name('users.store');
+Route::put('/usuarios/{id}', [UserController::class, 'edit'])->name('users.edit');

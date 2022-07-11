@@ -93,7 +93,7 @@ class User extends Authenticatable
             'required',
             'max:255',
             'email',
-            'unique:users,email',
+    //            'unique:users,email', TODO Verify if it's unique except for the current
         ],
         'phone_number' => ['required'],
         'birth_date' => [

@@ -27,19 +27,21 @@ class UserController extends Controller
 
     }
 
+    /**
+     * @param $id
+     * @return
+     */
     public function show($id)
     {
-        // $user = User::find($id);
+        $user = User::find($id);
 
-        // return $user;
+        if (is_null($user)) {
+            return abort(404);
+        }
 
-        if (!$user = User::find($id))
-            return redirect()->route('users.index');
-
-        $title = $user->name;
-
-        return view('users.show', compact('user', 'title'));
-
+        return view('users.show', [
+            'user' => $user,
+        ]);
     }
 
     public function create()
@@ -92,5 +94,40 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('users.index');
+    }
+
+    public function edit(Request $request)
+    {
+        $validator = Validator::make($request->all(), User::$updateRules);
+
+//        dd($request->id);
+
+        $user = User::find($request->id);
+
+        if (is_null($user)) {
+            return redirect()->back()->withErrors(['userNotFound' => 'Usuário não cadastrado no sistema']);
+        }
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput($request->all());
+        }
+
+        $validated = $validator->safe()->only([
+            'name',
+            'email',
+            'phone_number',
+            'birth_date',
+        ]);
+
+        $user->name = $validated['name'];
+        $user->email = $validated['email'];
+        $user->phone_number = $validated['phone_number'];
+        $user->birth_date = $validated['birth_date'];
+
+        $user->save();
+
+        return view('users.show', [
+            'user' => $user,
+        ]);
     }
 }
