@@ -42,7 +42,11 @@
                     </div>
                     <div class="col-sm-3 d-flex flex-row-reverse align-content-start flex-wrap">
                         <div class="btn-group" role="group">
-                            <a href="#" class="btn btn-danger">Remover</a>
+                            <a href="javascript:void(0)" onclick="selectAddressId('{{$address->id}}')"
+                               data-bs-toggle="modal" data-bs-target="#destroyModal"
+                               class="btn btn-danger">
+                                Remover
+                            </a>
                             <a href="{{ route('users.addresses.edit', [ 'userId' => $userId, 'id' => $address->id]) }}"
                                class="btn btn-warning">
                                 Editar
@@ -59,5 +63,38 @@
             <span class="fs-6">+</span> Cadastrar Novo
         </a>
     </div>
+
+    <div class="modal fade" id="destroyModal" tabindex="-1" aria-labelledby="destroyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="destroyModalLabel">Você tem certeza?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Este endereço será excluído
+                </div>
+                <div class="modal-footer">
+                    <a href="#" id="confirm_address_destroy" class="btn btn-warning">
+                        Excluir
+                    </a>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        Manter endereço
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const destroyAddressUrl = '{{ route('users.addresses.destroy', [ 'userId' => $userId, 'id' => 'addressId']) }}';
+
+        function selectAddressId(addressId) {
+            const link = document.getElementById('confirm_address_destroy');
+
+            link.href = destroyAddressUrl.replace('addressId', addressId);
+
+        }
+    </script>
 
 @endsection

@@ -142,7 +142,6 @@
         </div>
     @endif
 
-    <!-- Modal -->
     <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

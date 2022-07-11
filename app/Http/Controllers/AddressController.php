@@ -153,16 +153,24 @@ class AddressController extends Controller
         return redirect()->route('users.addresses.index', ['userId' => $address->user->id]);
     }
 
-//    /**
-//     * Remove the specified resource from storage.
-//     *
-//     * @param int $id
-//     * @return \Illuminate\Http\Response
-//     */
-//    public function destroy($id)
-//    {
-//        //
-//    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function destroy(Request $request)
+    {
+        $address = Address::find($request->id);
+
+        if (is_null($address)) {
+            return abort(404);
+        }
+
+        $address->delete();
+
+        return redirect()->route('users.addresses.index', ['userId' => $address->user_id]);
+    }
 
     /**
      * @param array $validated

@@ -32,15 +32,19 @@ Route::prefix('usuarios')->name('users.')->group(function () {
 
     Route::get('/{id}', [UserController::class, 'show'])->name('show');
 
+    Route::get('/excluir/{id}', [UserController::class, 'destroy'])->name('destroy');
+
     Route::get('/editar/{id}', [UserController::class, 'edit'])->name('edit');
     Route::put('/{id}', [UserController::class, 'update'])->name('update');
 
-    Route::name('addresses.')->group(function () {
-        Route::get('/{userId}/enderecos', [AddressController::class, 'index'])->name('index');
+    Route::prefix('/{userId}/enderecos')->name('addresses.')->group(function () {
+        Route::get('/', [AddressController::class, 'index'])->name('index');
 
-        Route::get('/{userId}/enderecos/criar', [AddressController::class, 'create'])->name('create');
-        Route::post('/{userId}/enderecos', [AddressController::class, 'store'])->name('store');
-        Route::get('/{userId}/enderecos/editar/{id}', [AddressController::class, 'edit'])->name('edit');
-        Route::put('/{userId}/enderecos/{id}', [AddressController::class, 'update'])->name('update');
+        Route::get('/criar', [AddressController::class, 'create'])->name('create');
+        Route::post('/', [AddressController::class, 'store'])->name('store');
+        Route::get('/editar/{id}', [AddressController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [AddressController::class, 'update'])->name('update');
+
+        Route::get('/excluir/{id}', [AddressController::class, 'destroy'])->name('destroy');
     });
 });

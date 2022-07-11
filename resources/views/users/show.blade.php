@@ -81,7 +81,32 @@
     @endforeach
 
     <div class="w-100 gap-2 d-flex flex-row-reverse" role="group">
-        <button type="button" class="btn btn-danger">Remover</button>
+        <a href="javascript:void(0)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#destroyModal">
+            Remover
+        </a>
         <a href="{{ route('users.edit', ['id' => $user->id ]) }}" class="btn btn-warning">Editar</a>
+    </div>
+
+    <div class="modal fade" id="destroyModal" tabindex="-1" aria-labelledby="destroyModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="destroyModalLabel">Você tem certeza?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Este usuário será excluído
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ route('users.destroy', [ 'id' => $user->id]) }}" id="confirm_address_destroy"
+                       class="btn btn-warning">
+                        Excluir
+                    </a>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        Manter usuário
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

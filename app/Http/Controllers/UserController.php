@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Address;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
@@ -145,5 +146,28 @@ class UserController extends Controller
         return view('users.show', [
             'user' => $user,
         ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param string $id
+     * @return RedirectResponse
+     */
+    public function destroy(string $id)
+    {
+        // TODO Make validations when using admin
+
+        $user = User::find($id);
+
+        if (is_null($user)) {
+            return abort(404);
+        }
+
+        Address::where('user_id', $id)->delete();
+
+        $user->delete();
+
+        return redirect()->route('users.index');
     }
 }

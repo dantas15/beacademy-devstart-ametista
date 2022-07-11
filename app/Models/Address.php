@@ -3,12 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\{
+    Model,
+    SoftDeletes,
+};
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Address extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     /** @var bool */
     public $incrementing = false;
@@ -44,7 +47,7 @@ class Address extends Model
         return $this->belongsTo(User::class);
     }
 
-    public static $createRules = [
+    public static array $createRules = [
         'zip' => [
             'required',
             'regex:(^[0-9]{5}-?[0-9]{3}$)',
@@ -60,7 +63,7 @@ class Address extends Model
         'complement' => ['nullable'],
     ];
 
-    public static $updateRules = [
+    public static array $updateRules = [
         'zip' => [
             'required',
             'regex:(^[0-9]{5}-?[0-9]{3}$)',

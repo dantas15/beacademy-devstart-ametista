@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /** @var bool */
     public $incrementing = false;
@@ -57,7 +58,7 @@ class User extends Authenticatable
         return $this->hasMany(Address::class);
     }
 
-    public static $createRules = [
+    public static array $createRules = [
         'name' => [
             'required',
             'max:255',
@@ -84,7 +85,7 @@ class User extends Authenticatable
         ],
     ];
 
-    public static $updateRules = [
+    public static array $updateRules = [
         'name' => [
             'required',
             'max:255',
@@ -93,7 +94,7 @@ class User extends Authenticatable
             'required',
             'max:255',
             'email',
-    //            'unique:users,email', TODO Verify if it's unique except for the current
+//            'unique:users,email', TODO Verify if it's unique except for the current user
         ],
         'phone_number' => ['required'],
         'birth_date' => [
