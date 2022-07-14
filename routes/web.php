@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     UserController,
-    AddressController
+    AddressController,
+    CategoryController,
+    ProductController,
 };
 
 /*
@@ -21,9 +23,36 @@ Route::get('/', function () {
     return view('welcome');
 })->name('index');
 
-Route::name('products')->get('/produtos', function () {
-    return view('products.list');
+
+Route::prefix('produtos')->name('products.')->group(function () {
+    Route::get('/', [ProductController::class, 'index'])->name('index');
+    Route::get('/criar', [ProductController::class, 'create'])->name('create');
+    Route::post('/', [ProductController::class, 'store'])->name('store');
+
+//     Route::get('/{id}', [ProductController::class, 'show'])->name('show');
+
+    Route::delete('/{id}', [ProductController::class, 'destroy'])->name('destroy');
+
+    Route::get('/{product}/editar', [ProductController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [ProductController::class, 'update'])->name('update');
+
 });
+
+Route::prefix('categorias')->name('categories.')->group(function () {
+    Route::get('/', [CategoryController::class, 'index'])->name('index');
+    Route::get('/criar', [CategoryController::class, 'create'])->name('create');
+    Route::post('/', [CategoryController::class, 'store'])->name('store');
+
+//     Route::get('/{id}', [CategoryController::class, 'show'])->name('show');
+
+    Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
+
+    Route::get('/{category}/editar', [CategoryController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [CategoryController::class, 'update'])->name('update');
+
+});
+
+Route::resource('categories', CategoryController::class);
 
 Route::prefix('usuarios')->name('users.')->group(function () {
     Route::get('/', [UserController::class, 'index'])->name('index');

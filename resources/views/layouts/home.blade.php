@@ -27,7 +27,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ Request::is('produtos*') ? 'active' : '' }}"
-                            href="{{ route('products') }}">
+                            href="{{ route('products.index') }}">
                             Produtos
                         </a>
                     </li>
