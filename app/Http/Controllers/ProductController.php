@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 
-class ProductsController extends Controller
+class ProductController extends Controller
 {
 
     public function index(){
@@ -51,7 +51,7 @@ class ProductsController extends Controller
         $product->amount = $request->amount;
         $product->cost_price = $request->cost_price;
         $product->sale_price = $request->sale_price;
-       
+
 
         if ($request->file('main_photo')) {
             $destinationPath = 'uploads/imagens';
