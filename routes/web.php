@@ -77,3 +77,7 @@ Route::prefix('usuarios')->name('users.')->group(function () {
         Route::get('/excluir/{id}', [AddressController::class, 'destroy'])->name('destroy');
     });
 });
+
+Auth::routes();
+
+Route::get('/app', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
