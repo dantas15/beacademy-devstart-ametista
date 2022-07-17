@@ -6,6 +6,7 @@ use App\Http\Controllers\{
     AddressController,
     CategoryController,
     ProductController,
+    AuthenticatedUserController,
 };
 
 /*
@@ -76,6 +77,20 @@ Route::prefix('users')->name('users.')->group(function () {
     });
 });
 
-Auth::routes();
+Auth::routes(); // Login, Register, Logout
 
-Route::get('/app', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::prefix('me')->name('me.')->group(function () {
+    Route::get('/', [AuthenticatedUserController::class, 'index'])->name('index');
+    Route::put('/', [AuthenticatedUserController::class, 'update'])->name('update');
+
+    Route::prefix('addresses')->name('addresses.')->group(function () {
+        Route::get('/', [AuthenticatedUserController::class, 'addresses'])->name('index');
+
+        Route::get('/create', [AuthenticatedUserController::class, 'createAddress'])->name('create');
+        Route::post('/', [AuthenticatedUserController::class, 'storeAddress'])->name('store');
+        Route::get('/{id}', [AuthenticatedUserController::class, 'editAddress'])->name('edit');
+        Route::put('/{id}', [AuthenticatedUserController::class, 'updateAddress'])->name('update');
+
+        Route::delete('/{id}', [AuthenticatedUserController::class, 'destroyAddress'])->name('destroy');
+    });
+});
