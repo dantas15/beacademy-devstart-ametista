@@ -53,11 +53,11 @@
 
     <h2>Endereços cadastrados</h2>
 
-    @if(count($addresses) <= 0)
+    @if (count($addresses) <= 0)
         <span class="fs-5 text-muted">Nenhum endereço encontrado!</span>
     @endif
 
-    @foreach($addresses as $address)
+    @foreach ($addresses as $address)
         <div class="card mb-4">
             <div class="card-body">
                 <div class="row">
@@ -67,7 +67,7 @@
                     <div class="col-sm-9">
                         <p class="text-muted mb-0">
                             {{ $address->street }}
-                            , {{ $address->number ?? 'Sem número'}}
+                            , {{ $address->number ?? 'Sem número' }}
                             , {{ $address->complement ?? 'Sem complemento' }}
                             , {{ $address->neighborhood ?? 'Sem bairro' }}
                         </p>
@@ -84,7 +84,7 @@
         <a href="javascript:void(0)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#destroyModal">
             Remover
         </a>
-        <a href="{{ route('users.edit', ['id' => $user->id ]) }}" class="btn btn-warning">Editar</a>
+        <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-warning">Editar</a>
     </div>
 
     <div class="modal fade" id="destroyModal" tabindex="-1" aria-labelledby="destroyModalLabel" aria-hidden="true">
@@ -98,10 +98,13 @@
                     Este usuário será excluído
                 </div>
                 <div class="modal-footer">
-                    <a href="{{ route('users.destroy', [ 'id' => $user->id]) }}" id="confirm_address_destroy"
-                       class="btn btn-warning">
-                        Excluir
-                    </a>
+                    <form action="{{ route('users.destroy', ['id' => $user->id]) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-warning">
+                            Excluir
+                        </button>
+                    </form>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                         Manter usuário
                     </button>
