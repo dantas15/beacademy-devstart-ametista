@@ -76,9 +76,6 @@ class UserController extends Controller
 
         // Replace the validated document_id to numbers only
         $documentNumbers = preg_replace('/[^0-9]/', '', $validated['document_id']);
-        if (strlen($documentNumbers) != 11 && strlen($documentNumbers) != 14) {
-            return redirect()->back()->withErrors(['document_id' => 'CPF/CNPJ inválido!']);
-        }
 
         if (DB::table('users')->where('document_id', $documentNumbers)->exists()) {
             return redirect()->back()->withErrors(['document_id' => 'CPF/CNPJ já cadastrado no sistema!']);
