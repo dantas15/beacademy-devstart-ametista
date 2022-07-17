@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Ramsey\Uuid\Uuid;
 
 class RegisterController extends Controller
 {
@@ -49,11 +50,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        return Validator::make($data, User::$createRules);
     }
 
     /**
@@ -64,10 +61,20 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $documentNumbers = preg_replace('/[^0-9]/', '', $data['document_id']);
+
+        if (DB::table('users')->where('document_id', $documentNumbers)->exists()) {
+            return redirect()->back()->withErrors(['document_id' => 'CPF/CNPJ já cadastrado no sistema!']);
+        }
+
         return User::create([
+            'id' => Uuid::uuid4(),
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => bcrypt($data['password']),
+            'phone_number' => $data['phone_number'],
+            'birth_date' => $data['birth_date'],
+            'document_id' => $documentNumbers,
         ]);
     }
 }
