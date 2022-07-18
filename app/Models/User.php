@@ -32,6 +32,7 @@ class User extends Authenticatable
         'phone_number',
         'birth_date',
         'document_id',
+        'is_admin',
     ];
 
     /**

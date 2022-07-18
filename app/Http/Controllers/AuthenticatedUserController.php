@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Address;
 use App\Models\User;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -22,9 +25,9 @@ class AuthenticatedUserController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the user's info.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {
@@ -35,7 +38,7 @@ class AuthenticatedUserController extends Controller
      * Updates current user info
      *
      * @param Request $request
-     * @return \Illuminate\Contracts\View\View
+     * @return RedirectResponse
      */
     public function update(Request $request)
     {
@@ -68,7 +71,7 @@ class AuthenticatedUserController extends Controller
     /**
      * Displays authenticated user's addresses
      *
-     * @return \Illuminate\Contracts\View\View
+     * @return View
      */
     public function addresses()
     {
