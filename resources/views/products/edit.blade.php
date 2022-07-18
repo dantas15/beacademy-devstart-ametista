@@ -15,7 +15,7 @@
                     <h2>Editar produto</h2>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-primary" href="{{ route('products.index') }}" enctype="multipart/form-data"> Voltar</a>
+                    <a class="btn btn-primary" href="{{ route('admin.products.index') }}" enctype="multipart/form-data"> Voltar</a>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
             {{ session('status') }}
         </div>
         @endif
-        <form action="{{ route('products.update',$product->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.products.update',$product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="row">

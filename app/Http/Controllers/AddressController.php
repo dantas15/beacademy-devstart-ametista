@@ -86,7 +86,7 @@ class AddressController extends Controller
 
         $user->addresses()->save($address);
 
-        return redirect()->route('users.addresses.index', ['userId' => $userId]);
+        return redirect()->route('admin.users.addresses.index', ['userId' => $userId]);
     }
 
     /**
@@ -150,7 +150,7 @@ class AddressController extends Controller
 
         $address->save();
 
-        return redirect()->route('users.addresses.index', ['userId' => $address->user->id]);
+        return redirect()->route('admin.users.addresses.index', ['userId' => $address->user->id]);
     }
 
     /**
@@ -169,7 +169,7 @@ class AddressController extends Controller
 
         $address->delete();
 
-        return redirect()->route('users.addresses.index', ['userId' => $address->user_id]);
+        return redirect()->route('admin.users.addresses.index', ['userId' => $address->user_id]);
     }
 
     /**

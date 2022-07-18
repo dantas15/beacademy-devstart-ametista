@@ -15,7 +15,7 @@
                     <h2>Categoria</h2>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-primary" href="{{ route('categories.index') }}"> Voltar</a>
+                    <a class="btn btn-primary" href="{{ route('admin.categories.index') }}"> Voltar</a>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
             {{ session('status') }}
         </div>
         @endif
-        <form action="{{ route('categories.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-12">
@@ -36,10 +36,11 @@
                         @enderror
                     </div>
                 </div>
-              
+
                 <button type="submit" class="btn btn-primary ml-3">Salvar</button>
             </div>
         </form>
+    </div>
 </body>
 
 </html>

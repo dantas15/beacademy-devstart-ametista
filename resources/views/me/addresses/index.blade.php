@@ -1,15 +1,14 @@
-@extends('layouts.dashboard')
-@section('title', 'Editar usuário')
+@extends('layouts.home')
+@section('title', 'Editar meus endereços')
 @section('content')
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('admin.users.edit', ['id' => $userId]) }}">
+            <a class="nav-link" href="{{ route('me.index') }}">
                 Dados principais
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page"
-                href="{{ route('admin.users.addresses.index', ['userId' => $userId]) }}">
+            <a class="nav-link active" aria-current="page" href="{{ route('me.addresses.index') }}">
                 Endereços
             </a>
         </li>
@@ -45,8 +44,7 @@
                                 data-bs-toggle="modal" data-bs-target="#destroyModal" class="btn btn-danger">
                                 Remover
                             </a>
-                            <a href="{{ route('admin.users.addresses.edit', ['userId' => $userId, 'id' => $address->id]) }}"
-                                class="btn btn-warning">
+                            <a href="{{ route('me.addresses.edit', ['id' => $address->id]) }}" class="btn btn-warning">
                                 Editar
                             </a>
                         </div>
@@ -57,7 +55,7 @@
     @endforeach
 
     <div class="w-100 gap-2 d-flex flex-row-reverse" role="group">
-        <a href="{{ route('admin.users.addresses.create', ['userId' => $userId]) }}" class="btn btn-outline-success">
+        <a href="{{ route('me.addresses.create') }}" class="btn btn-outline-success">
             <span class="fs-6">+</span> Cadastrar Novo
         </a>
     </div>
@@ -89,7 +87,7 @@
     </div>
 
     <script>
-        const destroyAddressUrl = '{{ route('admin.users.addresses.destroy', ['userId' => $userId, 'id' => 'addressId']) }}';
+        const destroyAddressUrl = "{{ route('me.addresses.destroy', ['id' => 'addressId']) }}";
 
         function selectAddressId(addressId) {
             const form = document.getElementById('confirm_address_destroy');

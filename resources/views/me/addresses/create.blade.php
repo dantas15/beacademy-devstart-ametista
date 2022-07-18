@@ -1,24 +1,23 @@
-@extends('layouts.dashboard')
-@section('title', 'Cadastrar endereço')
+@extends('layouts.home')
+@section('title', 'Editar meu endereço')
 @section('content')
-    <h1>Novo endereço de {{ $user->name }}</h1>
-    <form action="{{ route('admin.users.addresses.store', ['userId' => $user->id]) }}" method="post">
+    <form action="{{ route('me.addresses.store') }}" method="post">
         @csrf
         <div class="row mb-3">
             <div class="col-12 col-md-6">
                 <div>
                     <label for="zip" class="form-label">CEP</label>
-                    <input type="text" class="form-control" id="zip" name="zip"
-                           minlength="8" maxlength="9" pattern="(^[0-9]{5}-?[0-9]{3}$)" required>
+                    <input type="text" class="form-control" id="zip" name="zip" minlength="8" maxlength="9"
+                        pattern="(^[0-9]{5}-?[0-9]{3}$)" required>
                 </div>
                 @error('zip')
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->get('zip') as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->get('zip') as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @enderror
             </div>
             <div class="col-12 col-md-6">
@@ -27,13 +26,13 @@
                     <input type="text" class="form-control" id="neighborhood" name="neighborhood" required>
                 </div>
                 @error('neighborhood')
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->get('neighborhood') as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->get('neighborhood') as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @enderror
             </div>
         </div>
@@ -45,13 +44,13 @@
                     <input type="text" class="form-control" id="street" name="street" required>
                 </div>
                 @error('street')
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->get('street') as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->get('street') as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @enderror
             </div>
             <div class="col-3 col-md-2">
@@ -60,13 +59,13 @@
                     <input type="text" class="form-control" id="number" name="number" required>
                 </div>
                 @error('number')
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->get('number') as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->get('number') as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @enderror
             </div>
             <div class="col-9 col-md-3">
@@ -75,13 +74,13 @@
                     <input type="text" class="form-control" id="city" name="city" required>
                 </div>
                 @error('city')
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->get('city') as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->get('city') as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @enderror
             </div>
             <div class="col-3 col-md-1">
@@ -90,31 +89,29 @@
                     <input type="text" class="form-control" id="uf" name="uf" maxlength="2" required>
                 </div>
                 @error('uf')
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach($errors->get('uf') as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->get('uf') as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 @enderror
             </div>
         </div>
 
         <div class="form-floating mb-3">
-            <textarea id="complement" name="complement" class="form-control"
-                      placeholder="Digite algumas informações adicionais..."
-            ></textarea>
+            <textarea id="complement" name="complement" class="form-control" placeholder="Digite algumas informações adicionais..."></textarea>
             <label for="complement">Complemento (opcional)</label>
         </div>
         @error('complement')
-        <div class="alert alert-danger">
-            <ul>
-                @foreach($errors->get('complement') as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->get('complement') as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @enderror
 
         <div class="d-flex gap-2 flex-row-reverse">
@@ -146,7 +143,7 @@
                     Os dados não salvos serão perdido
                 </div>
                 <div class="modal-footer">
-                    <a href="{{ route('admin.users.addresses.index', ['userId' => $user->id]) }}" class="btn btn-secondary">
+                    <a href="{{ route('me.addresses.index') }}" class="btn btn-secondary">
                         Cancelar mesmo assim
                     </a>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">

@@ -64,7 +64,7 @@ class ProductController extends Controller
 
         $product->save();
 
-        return redirect()->route('products.index')->with('success', 'Produto criado com sucesso.');
+        return redirect()->route('admin.products.index')->with('success', 'Produto criado com sucesso.');
 
     }
 
@@ -115,7 +115,7 @@ class ProductController extends Controller
         $product->cost_price = $request->cost_price;
         $product->sale_price = $request->sale_price;
         $product->save();
-        return redirect()->route('products.index')
+        return redirect()->route('admin.products.index')
             ->with('success', 'Produto atualizado com sucesso');
     }
 
@@ -128,7 +128,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->route('products.index')
+        return redirect()->route('admin.products.index')
             ->with('success', 'Produto deletado com sucesso');
     }
 }

@@ -15,7 +15,7 @@
                     <h2>Tela de Produtos</h2>
                 </div>
                 <div class="pull-right mb-2">
-                    <a class="btn btn-success" href="{{ route('products.create') }}"> Criar novo produto</a>
+                    <a class="btn btn-success" href="{{ route('admin.products.create') }}"> Criar novo produto</a>
                 </div>
             </div>
         </div>
@@ -49,8 +49,8 @@
                     <img src="{{ $product->main_photo }}" width="100">
                 </td>
                 <td>
-                    <form action="{{ route('products.destroy',$product->id) }}" method="Post">
-                        <a class="btn btn-primary" href="{{ route('products.edit',$product->id) }}">Editar</a>
+                    <form action="{{ route('admin.products.destroy',$product->id) }}" method="Post">
+                        <a class="btn btn-primary" href="{{ route('admin.products.edit',$product->id) }}">Editar</a>
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Deletar</button>
@@ -65,6 +65,7 @@
                 {!! $products->links() !!}
             </div>
         </div>
+    </div>
 
 </body>
 
