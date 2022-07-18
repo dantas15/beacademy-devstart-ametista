@@ -92,7 +92,7 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('users.index');
+        return redirect()->route('admin.users.index');
     }
 
     public function edit($id)
@@ -165,6 +165,6 @@ class UserController extends Controller
 
         $user->delete();
 
-        return redirect()->route('users.index');
+        return redirect()->route('admin.users.index');
     }
 }

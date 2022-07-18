@@ -1,4 +1,4 @@
-@extends('layouts.home')
+@extends('layouts.dashboard')
 @section('title', 'Visualizar usuário')
 @section('content')
     <h2>Informações pessoas</h2>
@@ -84,7 +84,7 @@
         <a href="javascript:void(0)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#destroyModal">
             Remover
         </a>
-        <a href="{{ route('users.edit', ['id' => $user->id]) }}" class="btn btn-warning">Editar</a>
+        <a href="{{ route('admin.users.edit', ['id' => $user->id]) }}" class="btn btn-warning">Editar</a>
     </div>
 
     <div class="modal fade" id="destroyModal" tabindex="-1" aria-labelledby="destroyModalLabel" aria-hidden="true">
@@ -98,7 +98,7 @@
                     Este usuário será excluído
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('users.destroy', ['id' => $user->id]) }}" method="post">
+                    <form action="{{ route('admin.users.destroy', ['id' => $user->id]) }}" method="post">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-warning">

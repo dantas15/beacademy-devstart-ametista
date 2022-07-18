@@ -1,8 +1,8 @@
-@extends('layouts.home')
+@extends('layouts.dashboard')
 @section('title', 'Cadastrar')
 @section('content')
     <h1>Novo Usuário</h1>
-    <form action="{{ route('users.store') }}" method="post">
+    <form action="{{ route('admin.users.store') }}" method="post">
         @csrf
         <div class="mb-3">
             <label for="name" class="form-label">Nome</label>

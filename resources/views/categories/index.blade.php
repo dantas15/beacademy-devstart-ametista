@@ -15,7 +15,7 @@
                     <h2>CRUD categorias</h2>
                 </div>
                 <div class="pull-right mb-2">
-                    <a class="btn btn-success" href="{{ route('categories.create') }}"> Criar nova categoria</a>
+                    <a class="btn btn-success" href="{{ route('admin.categories.create') }}"> Criar nova categoria</a>
                 </div>
             </div>
         </div>
@@ -35,8 +35,8 @@
                 <td>{{ $category->id }}</td>
                 <td>{{ $category->name }}</td>
                 <td>
-                    <form action="{{ route('categories.destroy',$category->id) }}" method="Post">
-                        <a class="btn btn-primary" href="{{ route('categories.edit',$category->id) }}">Editar</a>
+                    <form action="{{ route('admin.categories.destroy',$category->id) }}" method="Post">
+                        <a class="btn btn-primary" href="{{ route('admin.categories.edit',$category->id) }}">Editar</a>
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Deletar</button>
@@ -51,6 +51,7 @@
                 {!! $categories->links() !!}
             </div>
         </div>
+    </div>
 
 </body>
 

@@ -1,8 +1,8 @@
-@extends('layouts.home')
+@extends('layouts.dashboard')
 @section('title', 'Cadastrar endereço')
 @section('content')
     <h1>Novo endereço de {{ $user->name }}</h1>
-    <form action="{{ route('users.addresses.store', ['userId' => $user->id]) }}" method="post">
+    <form action="{{ route('admin.users.addresses.store', ['userId' => $user->id]) }}" method="post">
         @csrf
         <div class="row mb-3">
             <div class="col-12 col-md-6">
@@ -146,7 +146,7 @@
                     Os dados não salvos serão perdido
                 </div>
                 <div class="modal-footer">
-                    <a href="{{ route('users.addresses.index', ['userId' => $user->id]) }}" class="btn btn-secondary">
+                    <a href="{{ route('admin.users.addresses.index', ['userId' => $user->id]) }}" class="btn btn-secondary">
                         Cancelar mesmo assim
                     </a>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">

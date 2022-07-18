@@ -1,14 +1,14 @@
-@extends('layouts.home')
+@extends('layouts.dashboard')
 @section('title', 'Editar usuário')
 @section('content')
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ route('users.edit', ['id' => $user->id])}}">
+            <a class="nav-link active" aria-current="page" href="{{ route('admin.users.edit', ['id' => $user->id])}}">
                 Dados principais
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('users.addresses.index', ['userId' => $user->id]) }}">
+            <a class="nav-link" href="{{ route('admin.users.addresses.index', ['userId' => $user->id]) }}">
                 Endereços
             </a>
         </li>
@@ -17,7 +17,7 @@
     <div class="card mb-4">
         <div class="card-header">Dados principais</div>
         <div class="card-body">
-            <form action="{{ route('users.update', ['id' => $user->id]) }}" method="post">
+            <form action="{{ route('admin.users.update', ['id' => $user->id]) }}" method="post">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">

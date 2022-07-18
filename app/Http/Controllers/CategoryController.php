@@ -45,7 +45,7 @@ class CategoryController extends Controller
 
         $category->save();
 
-        return redirect()->route('categories.index')->with('success', 'Categoria criada com sucesso.');
+        return redirect()->route('admin.categories.index')->with('success', 'Categoria criada com sucesso.');
 
 
 
@@ -90,7 +90,7 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $category->name = $request->name;
         $category->save();
-        return redirect()->route('categories.index')
+        return redirect()->route('admin.categories.index')
             ->with('success', 'category atualizado com sucesso');
     }
 
@@ -103,7 +103,7 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return redirect()->route('categories.index')
+        return redirect()->route('admin.categories.index')
             ->with('success', 'category deletado com sucesso');
     }
 }

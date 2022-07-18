@@ -15,7 +15,7 @@
                     <h2>Editar categoria</h2>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-primary" href="{{ route('categories.index') }}" enctype="multipart/form-data"> Voltar</a>
+                    <a class="btn btn-primary" href="{{ route('admin.categories.index') }}" enctype="multipart/form-data"> Voltar</a>
                 </div>
             </div>
         </div>
@@ -24,7 +24,7 @@
             {{ session('status') }}
         </div>
         @endif
-        <form action="{{ route('categories.update',$category->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.categories.update',$category->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="row">
