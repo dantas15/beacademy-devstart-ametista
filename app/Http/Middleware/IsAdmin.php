@@ -21,6 +21,6 @@ class IsAdmin
             return $next($request);
         }
 
-        return redirect('index')->with('error', 'Você não tem permissão para isso!');
+        return redirect()->route('index')->with('error', 'Você não tem permissão para isso!');
     }
 }
