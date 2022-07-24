@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddressRequest;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
@@ -99,28 +100,13 @@ class AuthenticatedUserController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function storeAddress(Request $request)
+    public function storeAddress(AddressRequest $request)
     {
+        $validated = $request->validationData();
 
-        $validator = Validator::make($request->all(), Address::$createRules);
+        $validated['id'] = Uuid::uuid4();
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
-
-        $validated = $validator->safe()->only([
-            'zip',
-            'uf',
-            'city',
-            'street',
-            'number',
-            'neighborhood',
-            'complement',
-        ]);
-
-        $address = new Address();
-        $address->id = Uuid::uuid4();
-        $this->extractedAddress($validated, $address);
+        $address = new Address($validated);
 
         $user = Auth::user();
 
@@ -151,40 +137,22 @@ class AuthenticatedUserController extends Controller
     /**
      * Update the specified address in storage.
      *
-     * @param Request $request
+     * @param AddressRequest $request
      * @return RedirectResponse
      */
-    public function updateAddress(Request $request)
+    public function updateAddress(AddressRequest $request)
     {
-        $validator = Validator::make($request->all(), Address::$updateRules);
+        $validated = $request->validated();
 
         $address = Address::find($request->id);
 
-        if (is_null($address)) {
-            return redirect()->back()->withErrors(['addressNotFound' => 'Endereço não cadastrado no sistema']);
-        }
+        $address->update($validated);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
-
-        $validated = $validator->safe()->only([
-            'zip',
-            'uf',
-            'city',
-            'street',
-            'number',
-            'neighborhood',
-            'complement',
-        ]);
-
-        $this->extractedAddress($validated, $address);
-
-        $address->save();
-
-        return redirect()->route('me.addresses.edit', [
-            'id' => $address->id
-        ])->with('success', 'Dados alterados com sucesso');
+        return redirect()
+            ->route('me.addresses.edit', [
+                'id' => $address->id
+            ])
+            ->with('success', 'Dados alterados com sucesso');
     }
 
     /**
@@ -204,21 +172,5 @@ class AuthenticatedUserController extends Controller
         $address->delete();
 
         return redirect()->route('me.addresses.index', ['userId' => $address->user_id]);
-    }
-
-    /**
-     * @param array $validated
-     * @param $address
-     * @return void
-     */
-    public function extractedAddress(array $validated, $address): void
-    {
-        $address->zip = $validated['zip'];
-        $address->uf = $validated['uf'];
-        $address->city = $validated['city'];
-        $address->street = $validated['street'];
-        $address->number = $validated['number'];
-        $address->neighborhood = $validated['neighborhood'];
-        $address->complement = $validated['complement'];
     }
 }
