@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddressRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
@@ -38,32 +39,17 @@ class AuthenticatedUserController extends Controller
     /**
      * Updates current user info
      *
-     * @param Request $request
+     * @param UserRequest $request
      * @return RedirectResponse
      */
-    public function update(Request $request)
+    public function update(UserRequest $request)
     {
-        $validator = Validator::make($request->all(), User::$updateRules);
-
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
-
-        $validated = $validator->safe()->only([
-            'name',
-            'email',
-            'phone_number',
-            'birth_date',
-        ]);
+        $validated = $request->validationData();
 
         $user = User::find(Auth::user()->id);
 
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        $user->phone_number = $validated['phone_number'];
-        $user->birth_date = $validated['birth_date'];
+        $user->update($validated);
 
-        $user->save();
         $request->session()->regenerate();
 
         return redirect()->route('me.index');
