@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class UserRequest extends FormRequest
@@ -21,7 +23,7 @@ class UserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed>
+     * @return array|RedirectResponse
      */
     public function rules()
     {
@@ -45,6 +47,12 @@ class UserRequest extends FormRequest
 
         // Create
         if ($this->method() == 'POST') {
+            $this->document_id = preg_replace('/[^0-9]/', '', $this->document_id ?? '');
+
+            if (DB::table('users')->where('document_id', $this->document_id)->exists()) {
+                return redirect()->back()->withErrors(['document_id' => 'CPF/CNPJ já cadastrado no sistema!']);
+            }
+
             $rules['email'] = [
                 Rule::unique('users'),
             ];

@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Ramsey\Uuid\Uuid;
 
 class RegisterController extends Controller
@@ -30,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected string $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -45,23 +47,50 @@ class RegisterController extends Controller
     /**
      * Get a validator for an incoming registration request.
      *
-     * @param  array  $data
+     * @param array $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, User::$createRules);
+        $rules = [
+            'name' => [
+                'required',
+                'max:255',
+            ],
+            'email' => [
+                'required',
+                'max:255',
+                'email',
+                Rule::unique('users'),
+            ],
+            'password' => [
+                'required',
+                'confirmed',
+            ],
+            'document_id' => [
+                'required',
+                'regex:/([0-9]{2}[\.]?[0-9]{3}[\.]?[0-9]{3}[\/]?[0-9]{4}[-]?[0-9]{2})|([0-9]{3}[\.]?[0-9]{3}[\.]?[0-9]{3}[-]?[0-9]{2})/',
+                'unique:App\Models\User,document_id'
+            ],
+            'phone_number' => ['required'],
+            'birth_date' => [
+                'required',
+                'date',
+            ],
+        ];
+
+        return Validator::make($data, $rules);
     }
 
     /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
-     * @return \App\Models\User
+     * @param array $data
+     * @return User|RedirectResponse
      */
     protected function create(array $data)
     {
-        $documentNumbers = preg_replace('/[^0-9]/', '', $data['document_id']);
+        $documentNumbers = preg_replace('/[^0-9]/', '', $data['document_id'] ?? '');
 
         if (DB::table('users')->where('document_id', $documentNumbers)->exists()) {
             return redirect()->back()->withErrors(['document_id' => 'CPF/CNPJ já cadastrado no sistema!']);
