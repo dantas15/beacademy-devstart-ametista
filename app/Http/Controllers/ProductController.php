@@ -10,7 +10,8 @@ class ProductController extends Controller
 {
 
     public function index(){
-        $products = Product::orderBy('id', 'desc')->paginate(5);
+        // echo'oi';exit;
+        $products = Product::orderBy('id', 'desc')->paginate(10);
         return view('products.index', compact('products'));
     }
 
@@ -36,8 +37,6 @@ class ProductController extends Controller
     public function store(Request $request)
     {
 
-        //echo '<pre>';print_r(request()->get('quantidade'));exit;
-
         $request->validate([
             'name' => 'required',
             'description' => 'required',
@@ -49,9 +48,9 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->category_id = $request->category_id;
         $product->amount = $request->amount;
-        $product->cost_price = $request->cost_price;
-        $product->sale_price = $request->sale_price;
-
+        $product->cost_price = str_replace(',', '.', str_replace('.', '', $request->cost_price));
+        $product->sale_price = str_replace(',', '.', str_replace('.', '', $request->sale_price));
+        $product->main_photo = $request->main_photo;
 
         if ($request->file('main_photo')) {
             $destinationPath = 'uploads/imagens';
@@ -76,8 +75,19 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        $product = Product::find($id);
+        //   echo '<pre>';print_r($product);exit;
+
+        if (is_null($product)) {
+            return abort(404);
+        }
+
+        return view('products.show', [
+            'product' => $product,
+            'addresses' => $product->addresses,
+        ]);
     }
+    
 
     /**
      * Show the form for editing the specified resource.
@@ -112,8 +122,18 @@ class ProductController extends Controller
         $product->description = $request->description;
         $product->category_id = $request->category_id;
         $product->amount = $request->amount;
-        $product->cost_price = $request->cost_price;
-        $product->sale_price = $request->sale_price;
+        $product->cost_price = str_replace(',', '.', str_replace('.', '', $request->cost_price));
+        $product->sale_price = str_replace(',', '.', str_replace('.', '', $request->sale_price));
+
+        if ($request->file('main_photo')) {
+            $destinationPath = 'uploads/imagens';
+            $extension = $request->file('main_photo')->getClientOriginalExtension();
+            $originalname = $request->file('main_photo')->getClientOriginalName();
+            $fileName = md5($originalname . date('Y-m-d H:i:s')) . '.' . $extension;
+            $request->file('main_photo')->move($destinationPath, $fileName);
+            $product->main_photo = $destinationPath . '/' . $fileName;
+        }
+
         $product->save();
         return redirect()->route('admin.products.index')
             ->with('success', 'Produto atualizado com sucesso');
@@ -125,8 +145,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(string $id)
     {
+
+        $product = Product::find($id);
         $product->delete();
         return redirect()->route('admin.products.index')
             ->with('success', 'Produto deletado com sucesso');

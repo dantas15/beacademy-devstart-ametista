@@ -21,7 +21,7 @@ class CategoryController extends Controller
     //public function create(Request $dados)
     public function create()
     {
-        // echo"create";exit;
+        //  echo"create";exit;
         return view('categories.create');
     }
 

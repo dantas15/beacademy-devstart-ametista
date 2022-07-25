@@ -1,57 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.dashboard')
+@section('title', 'Editar usuário')
+@section('content')
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('admin.users.edit', ['id' => $user->id])}}">
+                Dados principais
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('admin.users.addresses.index', ['userId' => $user->id]) }}">
+                Endereços
+            </a>
+        </li>
+    </ul>
+    <hr class="mt-0 mb-4">
+    <div class="card mb-4">
+        <div class="card-header">Dados principais</div>
+        <div class="card-body">
+            <form action="{{ route('admin.users.update', ['id' => $user->id]) }}" method="post">
+                @csrf
+                @method('PUT')
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nome</label>
+                    <input value="{{ $user->name }}" type="text" class="form-control" id="name" name="name"
+                           placeholder="João da Silva" required>
+                </div>
+                @error('name')
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->get('name') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @enderror
 
-<head>
-    <meta charset="UTF-8">
-    <title>Editar categoria</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+                <div class="mb-3">
+                    <label for="document_id" class="form-label">Documento (CPF ou CNPJ)</label>
+                    <input value="{{ $user->document_id }}" type="text" class="form-control" id="document_id"
+                           name="document_id" disabled>
+                </div>
 
-<body>
-    <div class="container mt-2">
-        <div class="row">
-            <div class="col-lg-12 margin-tb">
-                <div class="pull-left">
-                    <h2>Editar categoria</h2>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input value="{{ $user->email }}" type="email" class="form-control" id="email" name="email"
+                           placeholder="joao@dominio.com">
                 </div>
-                <div class="pull-right">
-                    <a class="btn btn-primary" href="{{ route('admin.categories.index') }}" enctype="multipart/form-data"> Voltar</a>
+
+                <div class="mb-3">
+                    <label for="phone_number" class="form-label">Número de telefone</label>
+                    <input value="{{ $user->phone_number }}" type="text" class="form-control" id="phone_number"
+                           name="phone_number"
+                           placeholder="99 999999999" required>
                 </div>
-            </div>
+                @error('phone_number')
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->get('phone_number') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @enderror
+
+                <div class="mb-3">
+                    <label for="birth_date" class="form-label">Data de nascimento</label>
+                    <input value="{{ $user->birth_date }}" type="date" class="form-control" id="birth_date"
+                           name="birth_date" required>
+                </div>
+                @error('birth_date')
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->get('birth_date') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+                @enderror
+
+                <div class="d-flex flex-row-reverse w-100">
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
         </div>
-        @if(session('status'))
-        <div class="alert alert-success mb-1 mt-1">
-            {{ session('status') }}
-        </div>
-        @endif
-        <form action="{{ route('admin.categories.update',$category->id) }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Categoria:</strong>
-                        <input type="text" name="name" value="{{ $category->name }}" class="form-control" placeholder="Categoria...">
-                        @error('categories')
-                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-primary ml-3">Editar</button>
-            </div>
-        </form>
     </div>
-</body>
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js" type="text/javascript"></script>
-<script src="/js/jquery.maskMoney.js" type="text/javascript"></script>
-
-<script>
-  $(function() {
-    // $('.money').maskMoney();
-    $(".money").maskMoney({prefix:'R$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-  })
-
-</script>
-
-</html>
+@endsection
