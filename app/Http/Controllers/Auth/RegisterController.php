@@ -52,6 +52,8 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        $data['document_id'] = preg_replace('/[^0-9]/', '', $data['document_id']);
+
         $rules = [
             'name' => [
                 'required',
@@ -90,12 +92,6 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $documentNumbers = preg_replace('/[^0-9]/', '', $data['document_id'] ?? '');
-
-        if (DB::table('users')->where('document_id', $documentNumbers)->exists()) {
-            return redirect()->back()->withErrors(['document_id' => 'CPF/CNPJ já cadastrado no sistema!']);
-        }
-
         return User::create([
             'id' => Uuid::uuid4(),
             'name' => $data['name'],
@@ -103,7 +99,7 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
             'phone_number' => $data['phone_number'],
             'birth_date' => $data['birth_date'],
-            'document_id' => $documentNumbers,
+            'document_id' => $data['document_id'],
         ]);
     }
 }
