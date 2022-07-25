@@ -21,4 +21,21 @@ class LoginControllerTest extends TestCase
 
         $this->actingAs($user)->get('/login')->assertRedirect('/me');
     }
+
+    /**
+     * Guest should be able to login
+     *
+     * @return void
+     */
+    public function test_guest_should_be_able_to_login()
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect('/me');
+    }
 }
