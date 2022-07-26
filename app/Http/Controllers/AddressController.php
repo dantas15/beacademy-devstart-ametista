@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddressRequest;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
@@ -10,7 +11,6 @@ use Illuminate\Http\{
     RedirectResponse,
     Request
 };
-use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 
 class AddressController extends Controller
@@ -55,32 +55,17 @@ class AddressController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param AddressRequest $request
      * @param $userId
      * @return RedirectResponse
      */
-    public function store(Request $request, $userId)
+    public function store(AddressRequest $request, $userId)
     {
+        $validated = $request->validationData();
 
-        $validator = Validator::make($request->all(), Address::$createRules);
+        $validated['id'] = Uuid::uuid4();
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
-
-        $validated = $validator->safe()->only([
-            'zip',
-            'uf',
-            'city',
-            'street',
-            'number',
-            'neighborhood',
-            'complement',
-        ]);
-
-        $address = new Address();
-        $address->id = Uuid::uuid4();
-        $this->extracted($validated, $address);
+        $address = new Address($validated);
 
         $user = User::find($userId);
 
@@ -96,7 +81,7 @@ class AddressController extends Controller
      * @param string $id Address id
      * @return Application|View
      */
-    public function edit($userId, $id)
+    public function edit(string $userId, string $id)
     {
         $user = User::find($userId);
 
@@ -119,38 +104,18 @@ class AddressController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
+     * @param AddressRequest $request
      * @return Application|View|RedirectResponse
      */
-    public function update(Request $request)
+    public function update(AddressRequest $request)
     {
-        $validator = Validator::make($request->all(), Address::$updateRules);
+        $validated = $request->validated();
 
         $address = Address::find($request->id);
 
-        if (is_null($address)) {
-            return redirect()->back()->withErrors(['addressNotFound' => 'Endereço não cadastrado no sistema']);
-        }
+        $address->update($validated);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
-
-        $validated = $validator->safe()->only([
-            'zip',
-            'uf',
-            'city',
-            'street',
-            'number',
-            'neighborhood',
-            'complement',
-        ]);
-
-        $this->extracted($validated, $address);
-
-        $address->save();
-
-        return redirect()->route('admin.users.addresses.index', ['userId' => $address->user->id]);
+        return redirect()->route('admin.users.addresses.index', ['userId' => $address->user_id]);
     }
 
     /**
@@ -169,22 +134,8 @@ class AddressController extends Controller
 
         $address->delete();
 
-        return redirect()->route('admin.users.addresses.index', ['userId' => $address->user_id]);
-    }
-
-    /**
-     * @param array $validated
-     * @param $address
-     * @return void
-     */
-    public function extracted(array $validated, $address): void
-    {
-        $address->zip = $validated['zip'];
-        $address->uf = $validated['uf'];
-        $address->city = $validated['city'];
-        $address->street = $validated['street'];
-        $address->number = $validated['number'];
-        $address->neighborhood = $validated['neighborhood'];
-        $address->complement = $validated['complement'];
+        return redirect()->route('admin.users.addresses.index', [
+            'userId' => $address->user_id,
+        ]);
     }
 }
