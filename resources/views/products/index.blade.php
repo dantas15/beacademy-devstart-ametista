@@ -1,3 +1,6 @@
+@extends('layouts.dashboard')
+@section('title', 'Usuários')
+@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +20,9 @@
                 <div class="pull-right mb-2">
                     <a class="btn btn-success" href="{{ route('admin.products.create') }}"> Criar novo produto</a>
                 </div>
+                <div class="pull-right mb-2">
+                    <a class="btn btn-success" href="{{ route('admin.categories.create') }}"> Criar nova categoria</a>
+                </div>   
             </div>
         </div>
         @if ($message = Session::get('success'))
@@ -75,3 +81,5 @@
 </script>
 
 </html>
+
+@endsection
