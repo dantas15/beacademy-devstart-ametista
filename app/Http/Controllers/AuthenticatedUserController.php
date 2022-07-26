@@ -11,7 +11,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 
 class AuthenticatedUserController extends Controller
@@ -33,7 +32,7 @@ class AuthenticatedUserController extends Controller
      */
     public function index()
     {
-        return view('me.index', ['user' => User::find(Auth::user()->id)]);
+        return view('me.index', ['user' => User::find(Auth::user()->getAuthIdentifier())]);
     }
 
     /**
@@ -46,11 +45,9 @@ class AuthenticatedUserController extends Controller
     {
         $validated = $request->validationData();
 
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::user()->getAuthIdentifier());
 
         $user->update($validated);
-
-        $request->session()->regenerate();
 
         return redirect()->route('me.index');
     }
@@ -62,7 +59,7 @@ class AuthenticatedUserController extends Controller
      */
     public function addresses()
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::user()->getAuthIdentifier());
 
         return view('me.addresses.index', [
             'addresses' => $user->addresses,
@@ -110,8 +107,8 @@ class AuthenticatedUserController extends Controller
     {
         $address = Address::find($id);
 
-        if (is_null($address) || $address->user_id != Auth::user()->id) {
-            return abort(404);
+        if (is_null($address) || $address->user_id != Auth::user()->getAuthIdentifier()) {
+            return abort(403);
         }
 
         return view('me.addresses.edit', [
@@ -132,6 +129,10 @@ class AuthenticatedUserController extends Controller
 
         $address = Address::find($request->id);
 
+        if (is_null($address) || $address->user_id != Auth::user()->getAuthIdentifier()) {
+            return abort(403);
+        }
+
         $address->update($validated);
 
         return redirect()
@@ -151,12 +152,12 @@ class AuthenticatedUserController extends Controller
     {
         $address = Address::find($id);
 
-        if (is_null($address) || $address->user_id != Auth::user()->id) {
-            return abort(404);
+        if (is_null($address) || $address->user_id != Auth::user()->getAuthIdentifier()) {
+            return abort(403);
         }
 
         $address->delete();
 
-        return redirect()->route('me.addresses.index', ['userId' => $address->user_id]);
+        return redirect()->route('me.addresses.index');
     }
 }
