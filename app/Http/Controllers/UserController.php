@@ -61,15 +61,7 @@ class UserController extends Controller
     {
         $validated = $request->validationData();
 
-        // Replace the validated document_id to numbers only
-        $documentNumbers = preg_replace('/[^0-9]/', '', $validated['document_id']);
-
-        if (DB::table('users')->where('document_id', $documentNumbers)->exists()) {
-            return redirect()->back()->withErrors(['document_id' => 'CPF/CNPJ já cadastrado no sistema!']);
-        }
-
         $validated['id'] = Uuid::uuid4();
-        $validated['document_id'] = $documentNumbers;
 
         $user = new User($validated);
 
@@ -99,7 +91,7 @@ class UserController extends Controller
 
     /**
      * @param UserRequest $request
-     * @return View|RedirectResponse
+     * @return RedirectResponse
      */
     public function update(UserRequest $request)
     {
@@ -109,8 +101,8 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return view('users.show', [
-            'user' => $user,
+        return redirect()->route('admin.users.show', [
+            'id' => $user->id
         ]);
     }
 
