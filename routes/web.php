@@ -7,7 +7,8 @@ use App\Http\Controllers\{
     CategoryController,
     ProductController,
     AuthenticatedUserController,
-    AdminController
+    AdminController,
+    OrderController
 };
 
 /*
@@ -58,6 +59,10 @@ Route::middleware('auth')->group(function () {
 
             Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ProductController::class, 'update'])->name('update');
+        });
+
+        Route::prefix('orders')->name('orders.')->group(function () {
+            Route::get('/', [OrderController::class, 'index'])->name('index');
         });
 
         Route::prefix('categories')->name('categories.')->group(function () {
