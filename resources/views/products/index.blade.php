@@ -1,77 +1,76 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.dashboard')
+@section('title', 'Produtos')
+@section('content')
 
-<head>
-    <meta charset="UTF-8">
-    <title>Laravel 9 CRUD Tutorial Example</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
+    <div class="row">
+        <div class="col-md-12">
 
-<body>
-    <div class="container mt-2">
-        <div class="row">
-            <div class="col-lg-12 margin-tb">
-                <div class="pull-left">
-                    <h2>Tela de Produtos</h2>
-                </div>
-                <div class="pull-right mb-2">
-                    <a class="btn btn-success" href="{{ route('admin.products.create') }}"> Criar novo produto</a>
-                </div>
+            <h1 class="container">Listagem de Produtos</h1>
+            <a href="{{ route('admin.products.create') }}" class="btn btn-success">Novo Produto</a>
+            <table class="table container">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Quantidade</th>
+                        <th scope="col">Preço de custo</th>
+                        <th scope="col">Preço de venda</th>
+                        <th scope="col">Foto principal</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    @foreach ($products as $product)
+                        <tr>
+                            <th scope="row">{{ $product->id }}</th>
+                            <td>{{ $product->name }}</td>
+                            <td>{{ $product->description }}</td>
+                            <td>{{ $product->category->name }}</td>
+                            <td>{{ $product->amount }}</td>
+                            <td>{{ number_format($product->cost_price, 2,',','.') }}</td>
+                            <td>{{ number_format($product->sale_price, 2,',','.') }}</td>
+                            <td>
+                                <img src="/{{ $product->main_photo }}" width="100">
+                            </td>
+                            <td><a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-info text-white">Visualizar</a></td>
+                        </tr>
+                    @endforeach
+                </tbody>
+
+            </table>
+            
             </div>
         </div>
-        @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-        @endif
-        <table class="table table-bordered">
-            <tr>
-                <th>id</th>
-                <th>Nome</th>
-                <th>Descrição</th>
-                <th>Categoria</th>
-                <th>Quantidade</th>
-                <th>Preço de custo</th>
-                <th>Preço de venda</th>
-                <th>Foto principal</th>
-                <th width="280px">Ação</th>
-            </tr>
-            @foreach ($products as $product)
-            <tr>
-                <td>{{ $product->id }}</td>
-                <td>{{ $product->name }}</td>
-                <td>{{ $product->description }}</td>
-                <td>{{ $product->category->name }}</td>
-                <td>{{ $product->amount }}</td>
-                <td>{{ number_format($product->cost_price, 2,',','.') }}</td>
-                <td>{{ number_format($product->sale_price, 2,',','.') }}</td>
-                <td>
-                    <img src="{{ $product->main_photo }}" width="100">
-                </td>
-                <td>
-                    <form action="{{ route('admin.products.destroy',$product->id) }}" method="Post">
-                        <a class="btn btn-primary" href="{{ route('admin.products.edit',$product->id) }}">Editar</a>
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Deletar</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </table>
 
         <div class="row" >
             <div class="col-md-12">
                 {!! $products->links() !!}
             </div>
         </div>
-    </div>
 
-</body>
+        <!--
+        <div class="row" >
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="pg-total">
+                            Total: <b>{{ $products->total()  }}</b>
+                        </div>
+                    </div>
+                    <div class="col-md-7 pull-right pg-render">
+                        {!! $products->appends( array() )->render() !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    $('.shadow-sm').hide();
-</script>
 
-</html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $('.shadow-sm').hide();
+    </script>
+
+@endsection

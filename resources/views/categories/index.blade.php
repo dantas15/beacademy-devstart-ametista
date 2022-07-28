@@ -1,63 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Laravel 9 CRUD Tutorial Example</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-
-<body>
-    <div class="container mt-2">
-        <div class="row">
-            <div class="col-lg-12 margin-tb">
-                <div class="pull-left">
-                    <h2>CRUD categorias</h2>
-                </div>
-                <div class="pull-right mb-2">
-                    <a class="btn btn-success" href="{{ route('admin.categories.create') }}"> Criar nova categoria</a>
-                </div>
-            </div>
-        </div>
-        @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-        @endif
-        <table class="table table-bordered">
+@extends('layouts.dashboard')
+@section('title', 'Categorias')
+@section('content')
+    <h1 class="container">Listagem de Categorias</h1>
+    <a href="{{ route('admin.categories.create') }}" class="btn btn-success">Nova Categoria</a>
+    <table class="table container">
+        <thead class="table-light">
             <tr>
-                <th>id</th>
-                <th>Nome</th>
-                <th width="280px">Ação</th>
+                <th scope="col">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Ações</th>
             </tr>
+        </thead>
+        <tbody class="table-group-divider">
             @foreach ($categories as $category)
-            <tr>
-                <td>{{ $category->id }}</td>
-                <td>{{ $category->name }}</td>
-                <td>
-                    <form action="{{ route('admin.categories.destroy',$category->id) }}" method="Post">
-                        <a class="btn btn-primary" href="{{ route('admin.categories.edit',$category->id) }}">Editar</a>
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Deletar</button>
-                    </form>
-                </td>
-            </tr>
+                <tr>
+                    <th scope="row">{{ $category->id }}</th>
+                    <td>{{ $category->name }}</td>
+                    <td>{{ date('d/m/Y', strtotime($category->created_at)) }}</td>
+
+                    <td><a href="{{-- route('admin.categories.show', $category->id) --}}" class="btn btn-info text-white">Visualizar</a></td>
+                </tr>
             @endforeach
-        </table>
-
-        <div class="row" >
-            <div class="col-md-12">
-                {!! $categories->links() !!}
-            </div>
-        </div>
-    </div>
-
-</body>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-    $('.shadow-sm').hide();
-</script>
-
-</html>
+        </tbody>
+    </table>
+@endsection

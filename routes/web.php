@@ -52,7 +52,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/create', [ProductController::class, 'create'])->name('create');
             Route::post('/', [ProductController::class, 'store'])->name('store');
 
-            //     Route::get('/{id}', [ProductController::class, 'show'])->name('show');
+            Route::get('/{id}', [ProductController::class, 'show'])->name('show');
 
             Route::delete('/{id}', [ProductController::class, 'destroy'])->name('destroy');
 
@@ -65,7 +65,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/create', [CategoryController::class, 'create'])->name('create');
             Route::post('/', [CategoryController::class, 'store'])->name('store');
 
-            //     Route::get('/{id}', [CategoryController::class, 'show'])->name('show');
+            Route::get('/{id}', [CategoryController::class, 'show'])->name('show');
 
             Route::delete('/{id}', [CategoryController::class, 'destroy'])->name('destroy');
 
