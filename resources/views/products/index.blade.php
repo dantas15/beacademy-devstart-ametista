@@ -40,7 +40,7 @@
                 <th>Preço de custo</th>
                 <th>Preço de venda</th>
                 <th>Foto principal</th>
-                <th width="280px">Ação</th>
+                <th width="380px">Ação</th>
             </tr>
             @foreach ($products as $product)
             <tr>
@@ -57,6 +57,7 @@
                 <td>
                     <form action="{{ route('admin.products.destroy',$product->id) }}" method="Post">
                         <a class="btn btn-primary" href="{{ route('admin.products.edit',$product->id) }}">Editar</a>
+                        <a class="btn btn-primary" href="#">Add Pedidos</a>
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Deletar</button>
