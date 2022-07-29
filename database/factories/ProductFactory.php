@@ -6,7 +6,7 @@ use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
  */
 class ProductFactory extends Factory
 {
@@ -19,6 +19,7 @@ class ProductFactory extends Factory
     {
         $cost = $this->faker->randomFloat(2, 0, 100);
         $sale = $cost + ($cost * 0.2);
+        $sale = number_format($sale, 2, '.', '');
 
         return [
             'name' => $this->faker->words(2, true),
