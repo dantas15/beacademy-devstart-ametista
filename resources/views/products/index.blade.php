@@ -1,6 +1,3 @@
-@extends('layouts.dashboard')
-@section('title', 'Usuários')
-@section('content')
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,9 +17,6 @@
                 <div class="pull-right mb-2">
                     <a class="btn btn-success" href="{{ route('admin.products.create') }}"> Criar novo produto</a>
                 </div>
-                <div class="pull-right mb-2">
-                    <a class="btn btn-success" href="{{ route('admin.categories.create') }}"> Criar nova categoria</a>
-                </div>   
             </div>
         </div>
         @if ($message = Session::get('success'))
@@ -40,7 +34,7 @@
                 <th>Preço de custo</th>
                 <th>Preço de venda</th>
                 <th>Foto principal</th>
-                <th width="380px">Ação</th>
+                <th width="280px">Ação</th>
             </tr>
             @foreach ($products as $product)
             <tr>
@@ -57,7 +51,6 @@
                 <td>
                     <form action="{{ route('admin.products.destroy',$product->id) }}" method="Post">
                         <a class="btn btn-primary" href="{{ route('admin.products.edit',$product->id) }}">Editar</a>
-                        <a class="btn btn-primary" href="#">Add Pedidos</a>
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger">Deletar</button>
@@ -82,5 +75,3 @@
 </script>
 
 </html>
-
-@endsection

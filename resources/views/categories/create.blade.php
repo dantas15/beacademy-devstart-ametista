@@ -15,7 +15,7 @@
                     <h2>Categoria</h2>
                 </div>
                 <div class="pull-right">
-                    <a class="btn btn-primary" href="{{ route('admin.products.index') }}"> Voltar</a>
+                    <a class="btn btn-primary" href="{{ route('admin.categories.index') }}"> Voltar</a>
                 </div>
             </div>
         </div>

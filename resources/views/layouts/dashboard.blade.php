@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('admin.orders.index') }}" class="nav-link text-white">
+                    <a href="#" class="nav-link text-white">
                         Pedidos
                     </a>
                 </li>

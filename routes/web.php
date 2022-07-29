@@ -10,8 +10,7 @@ use App\Http\Controllers\{
     CategoryController,
     ProductController,
     AuthenticatedUserController,
-    AdminController,
-    OrderController
+    AdminController
 };
 
 /*
@@ -70,15 +69,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ProductController::class, 'update'])->name('update');
         });
-
-        // Routes for orders
-
-
-        Route::prefix('orders')->name('orders.')->group(function () {
-            Route::get('/', [OrderController::class, 'index'])->name('index');
-        });
-
-
         Route::prefix('categories')->name('categories.')->group(function () {
             Route::get('/', [CategoryController::class, 'index'])->name('index');
             Route::get('/create', [CategoryController::class, 'create'])->name('create');
