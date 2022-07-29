@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class, // 1 Admin, 2 User w/o Addresses
             AddressSeeder::class, // Admin with address
+            ProductSeeder::class, // Products with categories
         ]);
     }
 }
