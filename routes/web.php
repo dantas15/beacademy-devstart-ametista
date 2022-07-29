@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    HomeController,
+    CartController,
+    ShopController,
     UserController,
     AddressController,
     CategoryController,
@@ -22,9 +25,16 @@ use App\Http\Controllers\{
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('index');
+Route::get('/', [HomeController::class, 'index'])->name('index');
+
+Route::prefix('shop')->name('shop.')->group(function () {
+    Route::get('/', [ShopController::class, 'index'])->name('index');
+
+    Route::prefix('cart')->name('cart.')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('index');
+        Route::post('/', [CartController::class, 'store'])->name('store');
+    });
+});
 
 Auth::routes(); // Login, Register, Logout
 
@@ -61,14 +71,14 @@ Route::middleware('auth')->group(function () {
             Route::put('/{id}', [ProductController::class, 'update'])->name('update');
         });
 
-            // Routes for orders
+        // Routes for orders
 
 
         Route::prefix('orders')->name('orders.')->group(function () {
             Route::get('/', [OrderController::class, 'index'])->name('index');
-        }); 
+        });
 
-            
+
         Route::prefix('categories')->name('categories.')->group(function () {
             Route::get('/', [CategoryController::class, 'index'])->name('index');
             Route::get('/create', [CategoryController::class, 'create'])->name('create');
