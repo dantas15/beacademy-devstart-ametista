@@ -44,6 +44,7 @@ class CartController extends Controller
             $cart[$productData['productId']]['amount'] += $productData['amount'];
         } else {
             $cart[$productData['productId']] = [
+                'id' => $productData['productId'],
                 'name' => $product->name,
                 'amount' => $productData['amount'],
                 'description' => $product->description,
@@ -59,5 +60,41 @@ class CartController extends Controller
         session()->put('totalCartPrice', $totalCartPrice);
 
         return redirect()->back()->with('success', 'Produto adicionado com sucesso!');
+    }
+
+    /**
+     * Remove a product from the cart
+     *
+     * @param CartRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    public function destroy(CartRequest $request)
+    {
+        $productData = $request->validationData();
+
+        $cart = session()->get('cart');
+
+        if (is_null($cart)) {
+            $cart = [];
+        }
+
+        if (isset($cart[$productData['productId']])) {
+            if ($cart[$productData['productId']]['amount'] - $productData['amount'] <= 0) {
+                unset($cart[$productData['productId']]);
+            } else {
+                $cart[$productData['productId']]['amount'] -= $productData['amount'];
+            }
+        }
+
+        $totalCartPrice = (float)array_reduce($cart, function ($carry, $item) {
+            return (float)$carry + (float)$item['price'] * (int)$item['amount'];
+        });
+
+        session()->put('cart', $cart);
+        session()->put('totalCartPrice', $totalCartPrice);
+
+        return redirect()->back()->with('success', 'Produto removido com sucesso!');
     }
 }

@@ -30,8 +30,7 @@ class CartRequest extends FormRequest
                 'exists:products,id',
             ],
         ];
-
-        $product = Product::find($this->productId);
+        $product = Product::where('id', $this->productId)->get()->first();
 
         if (!is_null($product)) {
 //            $rules['amount'][] = 'max:' . $product->amount;
@@ -40,7 +39,6 @@ class CartRequest extends FormRequest
                 "between:1,$product->amount",
             ];
         }
-
 
         return $rules;
     }
