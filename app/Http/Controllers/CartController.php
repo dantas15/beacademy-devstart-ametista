@@ -17,7 +17,7 @@ class CartController extends Controller
      */
     public function index()
     {
-        return view('cart.index');
+        return view('shop.cart.index');
     }
 
     /**
@@ -51,7 +51,12 @@ class CartController extends Controller
             ];
         }
 
+        $totalCartPrice = (float)array_reduce($cart, function ($carry, $item) {
+            return (float)$carry + (float)$item['price'] * (int)$item['amount'];
+        });
+
         session()->put('cart', $cart);
+        session()->put('totalCartPrice', $totalCartPrice);
 
         return redirect()->back()->with('success', 'Produto adicionado com sucesso!');
     }

@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('shop*') ? 'active' : '' }}" href="{{ route('shop.index') }}">
+                    <a class="nav-link {{ Request::is('shop') ? 'active' : '' }}" href="{{ route('shop.index') }}">
                         Produtos
                     </a>
                 </li>
@@ -45,7 +45,7 @@
             <ul class="navbar-nav ms-auto">
                 @if(session()->get('cart') != null)
                     <li class="nav-auto me-4">
-                        <a class="nav-link {{ Request::is('cart*') ? 'active' : '' }} position-relative"
+                        <a class="nav-link {{ Request::is('shop/cart*') ? 'active' : '' }} position-relative"
                            href="{{ route('shop.cart.index') }}">
                             <span>Carrinho</span>
                             <span
