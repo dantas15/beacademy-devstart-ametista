@@ -24,6 +24,7 @@ class CartControllerTest extends TestCase
 
         $response->assertSessionHas('cart', [
             $product->id => [
+                'id' => $product->id,
                 'name' => $product->name,
                 'amount' => 1,
                 'description' => $product->description,
@@ -49,6 +50,33 @@ class CartControllerTest extends TestCase
             'amount' => 1,
         ]);
 
+        $expectedTotalPrice = $product->sale_price * 2;
+
         $this->assertEquals(2, session()->get('cart')[$product->id]['amount']);
+        $this->assertEquals($expectedTotalPrice, session()->get('totalCartPrice'));
     }
+
+    /**
+     * @test Product amount can be decreased
+     */
+    public function test_product_amount_can_be_decreased()
+    {
+        $product = Product::factory()->create();
+
+        $this->post(route('shop.cart.store'), [
+            'productId' => $product->id,
+            'amount' => 2,
+        ]);
+
+        $this->post(route('shop.cart.store'), [
+            'productId' => $product->id,
+            'amount' => -1,
+        ]);
+
+        $expectedTotalPrice = $product->sale_price;
+
+        $this->assertEquals(1, session()->get('cart')[$product->id]['amount']);
+        $this->assertEquals($expectedTotalPrice, session()->get('totalCartPrice'));
+    }
+
 }
