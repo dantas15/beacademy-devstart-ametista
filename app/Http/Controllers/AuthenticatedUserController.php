@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddressRequest;
+use App\Http\Requests\UserRequest;
 use App\Models\Address;
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
@@ -9,7 +11,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 use Ramsey\Uuid\Uuid;
 
 class AuthenticatedUserController extends Controller
@@ -31,39 +32,22 @@ class AuthenticatedUserController extends Controller
      */
     public function index()
     {
-        return view('me.index', ['user' => User::find(Auth::user()->id)]);
+        return view('me.index', ['user' => User::find(Auth::user()->getAuthIdentifier())]);
     }
 
     /**
      * Updates current user info
      *
-     * @param Request $request
+     * @param UserRequest $request
      * @return RedirectResponse
      */
-    public function update(Request $request)
+    public function update(UserRequest $request)
     {
-        $validator = Validator::make($request->all(), User::$updateRules);
+        $validated = $request->validationData();
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
+        $user = User::find(Auth::user()->getAuthIdentifier());
 
-        $validated = $validator->safe()->only([
-            'name',
-            'email',
-            'phone_number',
-            'birth_date',
-        ]);
-
-        $user = User::find(Auth::user()->id);
-
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        $user->phone_number = $validated['phone_number'];
-        $user->birth_date = $validated['birth_date'];
-
-        $user->save();
-        $request->session()->regenerate();
+        $user->update($validated);
 
         return redirect()->route('me.index');
     }
@@ -75,7 +59,7 @@ class AuthenticatedUserController extends Controller
      */
     public function addresses()
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::user()->getAuthIdentifier());
 
         return view('me.addresses.index', [
             'addresses' => $user->addresses,
@@ -99,28 +83,13 @@ class AuthenticatedUserController extends Controller
      * @param Request $request
      * @return RedirectResponse
      */
-    public function storeAddress(Request $request)
+    public function storeAddress(AddressRequest $request)
     {
+        $validated = $request->validationData();
 
-        $validator = Validator::make($request->all(), Address::$createRules);
+        $validated['id'] = Uuid::uuid4();
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
-
-        $validated = $validator->safe()->only([
-            'zip',
-            'uf',
-            'city',
-            'street',
-            'number',
-            'neighborhood',
-            'complement',
-        ]);
-
-        $address = new Address();
-        $address->id = Uuid::uuid4();
-        $this->extractedAddress($validated, $address);
+        $address = new Address($validated);
 
         $user = Auth::user();
 
@@ -138,8 +107,8 @@ class AuthenticatedUserController extends Controller
     {
         $address = Address::find($id);
 
-        if (is_null($address) || $address->user_id != Auth::user()->id) {
-            return abort(404);
+        if (is_null($address) || $address->user_id != Auth::user()->getAuthIdentifier()) {
+            return abort(403);
         }
 
         return view('me.addresses.edit', [
@@ -151,40 +120,26 @@ class AuthenticatedUserController extends Controller
     /**
      * Update the specified address in storage.
      *
-     * @param Request $request
+     * @param AddressRequest $request
      * @return RedirectResponse
      */
-    public function updateAddress(Request $request)
+    public function updateAddress(AddressRequest $request)
     {
-        $validator = Validator::make($request->all(), Address::$updateRules);
+        $validated = $request->validated();
 
         $address = Address::find($request->id);
 
-        if (is_null($address)) {
-            return redirect()->back()->withErrors(['addressNotFound' => 'Endereço não cadastrado no sistema']);
+        if (is_null($address) || $address->user_id != Auth::user()->getAuthIdentifier()) {
+            return abort(403);
         }
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
+        $address->update($validated);
 
-        $validated = $validator->safe()->only([
-            'zip',
-            'uf',
-            'city',
-            'street',
-            'number',
-            'neighborhood',
-            'complement',
-        ]);
-
-        $this->extractedAddress($validated, $address);
-
-        $address->save();
-
-        return redirect()->route('me.addresses.edit', [
-            'id' => $address->id
-        ])->with('success', 'Dados alterados com sucesso');
+        return redirect()
+            ->route('me.addresses.edit', [
+                'id' => $address->id
+            ])
+            ->with('success', 'Dados alterados com sucesso');
     }
 
     /**
@@ -197,28 +152,12 @@ class AuthenticatedUserController extends Controller
     {
         $address = Address::find($id);
 
-        if (is_null($address) || $address->user_id != Auth::user()->id) {
-            return abort(404);
+        if (is_null($address) || $address->user_id != Auth::user()->getAuthIdentifier()) {
+            return abort(403);
         }
 
         $address->delete();
 
-        return redirect()->route('me.addresses.index', ['userId' => $address->user_id]);
-    }
-
-    /**
-     * @param array $validated
-     * @param $address
-     * @return void
-     */
-    public function extractedAddress(array $validated, $address): void
-    {
-        $address->zip = $validated['zip'];
-        $address->uf = $validated['uf'];
-        $address->city = $validated['city'];
-        $address->street = $validated['street'];
-        $address->number = $validated['number'];
-        $address->neighborhood = $validated['neighborhood'];
-        $address->complement = $validated['complement'];
+        return redirect()->route('me.addresses.index');
     }
 }

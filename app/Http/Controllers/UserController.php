@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\Address;
 use App\Models\User;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 use Ramsey\Uuid\Uuid;
-use Illuminate\Http\{
-    RedirectResponse,
-    Request
-};
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -30,7 +30,7 @@ class UserController extends Controller
 
     /**
      * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|never
+     * @return Application|\Illuminate\Contracts\View\Factory|View|never
      */
     public function show($id)
     {
@@ -54,47 +54,28 @@ class UserController extends Controller
     /**
      * Store a new user in the database.
      *
-     * @param Request $request
+     * @param UserRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        $validator = Validator::make($request->all(), User::$createRules);
+        $validated = $request->validationData();
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
+        $validated['id'] = Uuid::uuid4();
 
-        $validated = $validator->safe()->only([
-            'name',
-            'email',
-            'password',
-            'phone_number',
-            'birth_date',
-            'document_id',
-        ]);
-
-        // Replace the validated document_id to numbers only
-        $documentNumbers = preg_replace('/[^0-9]/', '', $validated['document_id']);
-
-        if (DB::table('users')->where('document_id', $documentNumbers)->exists()) {
-            return redirect()->back()->withErrors(['document_id' => 'CPF/CNPJ já cadastrado no sistema!']);
-        }
-
-        $user = new User();
-        $user->id = Uuid::uuid4();
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        $user->password = bcrypt($validated['password']);
-        $user->phone_number = $validated['phone_number'];
-        $user->birth_date = $validated['birth_date'];
-        $user->document_id = $documentNumbers;
+        $user = new User($validated);
 
         $user->save();
 
         return redirect()->route('admin.users.index');
     }
 
+    /**
+     * Show edit user form.
+     *
+     * @param string $id User id
+     * @return View
+     */
     public function edit($id)
     {
         $user = User::find($id);
@@ -109,39 +90,19 @@ class UserController extends Controller
     }
 
     /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|RedirectResponse
+     * @param UserRequest $request
+     * @return RedirectResponse
      */
-    public function update(Request $request)
+    public function update(UserRequest $request)
     {
-        $validator = Validator::make($request->all(), User::$updateRules);
+        $validated = $request->validationData();
 
         $user = User::find($request->id);
 
-        if (is_null($user)) {
-            return redirect()->back()->withErrors(['userNotFound' => 'Usuário não cadastrado no sistema']);
-        }
+        $user->update($validated);
 
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput($request->all());
-        }
-
-        $validated = $validator->safe()->only([
-            'name',
-            'email',
-            'phone_number',
-            'birth_date',
-        ]);
-
-        $user->name = $validated['name'];
-        $user->email = $validated['email'];
-        $user->phone_number = $validated['phone_number'];
-        $user->birth_date = $validated['birth_date'];
-
-        $user->save();
-
-        return view('users.show', [
-            'user' => $user,
+        return redirect()->route('admin.users.show', [
+            'id' => $user->id
         ]);
     }
 
@@ -153,8 +114,6 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        // TODO Make validations when using admin
-
         $user = User::find($id);
 
         if (is_null($user)) {
