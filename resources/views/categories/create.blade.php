@@ -1,38 +1,26 @@
 @extends('layouts.dashboard')
 @section('title', 'Cadastrar')
 @section('content')
-<div class="container mt-2">
-        <div class="row">
-            <div class="col-lg-12 margin-tb">
-                <div class="pull-left mb-2">
-                    <h2>Categoria</h2>
-                </div>
-                <div class="pull-right">
-                    <a class="btn btn-primary" href="{{ route('admin.categories.index') }}"> Voltar</a>
-                </div>
-            </div>
-        </div>
-        @if(session('status'))
-        <div class="alert alert-success mb-1 mt-1">
-            {{ session('status') }}
-        </div>
-        @endif
-        <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Categoria:</strong>
-                        <input type="text" name="name" class="form-control" placeholder="Categoria do produto. . .">
-                        @error('name')
-                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </div>
+<h1>Nova categoria</h1>
+<form action="{{ route('admin.categories.store') }}" method="post" enctype="multipart/form-data">
+    @csrf
+
+    <div class="mb-3">
+        <label for="name" class="form-label">Nome</label>
+        <input type="text" class="form-control" id="name" name="name" placeholder="Nome da categoria">
+    </div>
+    @error('name')
+    <div class="alert alert-danger">
+        <ul>
+            @foreach($errors->get('name') as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @enderror
 
                 <button type="submit" class="btn btn-primary ml-3">Salvar</button>
-            </div>
+            
         </form>
-    </div>
 
 @endsection

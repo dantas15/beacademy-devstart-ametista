@@ -18,7 +18,7 @@
             @method('PUT')
             <div class="mb-3">
                 <label for="name" class="form-label">Nome</label>
-                <input value="{{ $product->name }}" type="text" class="form-control" id="name" name="name" placeholder="João da Silva" >
+                <input value="{{ $product->name }}" type="text" class="form-control" id="name" name="name" placeholder="João da Silva">
             </div>
             @error('name')
             <div class="alert alert-danger">
@@ -32,7 +32,7 @@
 
             <div class="mb-3">
                 <label for="description" class="form-label">Descrição</label>
-                <input value="{{ $product->name }}" type="text" class="form-control" id="description" name="description" placeholder="Descrição do produto" >
+                <input value="{{ $product->name }}" type="text" class="form-control" id="description" name="description" placeholder="Descrição do produto">
             </div>
             @error('description')
             <div class="alert alert-danger">
@@ -73,7 +73,7 @@
 
             <div class="mb-3">
                 <label for="amount" class="form-label">Quantidade</label>
-                <input value="{{$product->amount}}" type="number" class="form-control" id="number" name="amount"  placeholder="Quantidade de produto">
+                <input value="{{$product->amount}}" type="number" class="form-control" id="number" name="amount" placeholder="Quantidade de produto">
             </div>
             @error('password')
             <div class="alert alert-danger">
@@ -87,7 +87,7 @@
 
             <div class="mb-3">
                 <label for="cost_price" class="form-label">Preço de custo</label>
-                <input value="{{$product->cost_price}}" type="text" class="form-control money" id="number" name="cost_price" placeholder="Preço de custo do produto" >
+                <input value="{{$product->cost_price}}" type="text" class="form-control money" id="number" name="cost_price" placeholder="Preço de custo do produto">
             </div>
             @error('cost_price')
             <div class="alert alert-danger">
@@ -101,7 +101,7 @@
 
             <div class="mb-3">
                 <label for="sale_price" class="form-label">Preço de venda</label>
-                <input value="{{$product->sale_price}}" type="text" class="form-control money" id="sale_price" name="sale_price" placeholder="Preço de venda do produto" >
+                <input value="{{$product->sale_price}}" type="text" class="form-control money" id="sale_price" name="sale_price" placeholder="Preço de venda do produto">
             </div>
             @error('sale_price')
             <div class="alert alert-danger">
@@ -115,7 +115,7 @@
 
             <div class="mb-3">
                 <label for="main_photo" class="form-label">Foto principal</label>
-                <input type="file" class="form-control" id="main_photo" name="main_photo" >
+                <input type="file" class="form-control" id="main_photo" name="main_photo">
 
                 <div style="margin-top:5px">
                     <img width="120" src="/{{$product->main_photo}}">
