@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Models\PaymentMethod;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Validation\Rule;
 
 class CheckoutRequest extends FormRequest
@@ -14,32 +16,28 @@ class CheckoutRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed>
+     * @return RedirectResponse|array
      */
     public function rules()
     {
-        $availablePaymentMethods = [
-            'credit_card', 'boleto'
-        ];
+
+        if (!$this->addressId) {
+            return redirect()->route('shop.checkout.select-address')->with('error', 'Selecione um endereço válido');
+        }
 
         $rules = [
-            'addressId' => [
+            'paymentMethodId' => [
                 'required',
-                'exists:addresses,id',
-            ],
-            'paymentMethod' => [
-                'required',
-                Rule::in($availablePaymentMethods),
             ],
         ];
 
-        if ($this->paymentMethod == 'credit_card') {
+        if (PaymentMethod::find($this->paymentMethodId)->name == 'credit_card') {
             $rules['email'] = [
                 'required',
             ];
@@ -57,7 +55,7 @@ class CheckoutRequest extends FormRequest
             ];
         }
 
-        if ($this->paymentMethod == 'boleto') {
+        if (PaymentMethod::find($this->paymentMethodId)->name == 'boleto') {
             $rules['document_id'] = [
                 'required',
                 Rule::exists('users', 'document_id'),

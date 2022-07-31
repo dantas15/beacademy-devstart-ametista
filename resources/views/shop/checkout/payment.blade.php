@@ -45,36 +45,41 @@
                             </button>
                         </h2>
 
-                        <form class="mt-6" action="{{ route('shop.checkout.payment', ['addressId' => $address->id, 'payment_method' => 'credit_card']) }}" method="POST">
+                        <form class="mt-6"
+                              action="{{ route('shop.checkout.payment', ['addressId' => $address->id, 'paymentMethodId' => $creditCardId]) }}"
+                              method="POST">
                             @csrf
+                            @method('POST')
                             <div class="container-sm px-5">
 
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="email" class="form-control" id="email" placeholder="joao@gmail.com"
-                                           name="email" value="{{ Auth::user()->email }}">
+                                           name="email" value="{{ Auth::user()->email }}" required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Nome no cartão</label>
                                     <input type="text" class="form-control" id="name" placeholder="João da Silva"
-                                           name="name" value="{{ Auth::user()->name }}">
+                                           name="name" value="{{ Auth::user()->name }}" required>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="creditNumber" class="form-label">Número no cartão</label>
-                                    <input type="text" class="form-control" id="creditNumber" name="creditNumber">
+                                    <input type="text" class="form-control" id="creditNumber" name="creditNumber"
+                                           required>
                                 </div>
 
                                 <div class="row mb-3">
                                     <div class="col-6">
                                         <label for="expDate" class="form-label">Data de expedição</label>
-                                        <input type="month" class="form-control" id="expDate" name="expDate">
+                                        <input type="month" class="form-control" id="expDate" name="expDate" required>
                                     </div>
 
                                     <div class="col-6">
                                         <label for="cvc" class="form-label">CVC</label>
-                                        <input type="number" maxlength="3" class="form-control" id="cvc" name="cvc">
+                                        <input type="number" maxlength="3" class="form-control" id="cvc" name="cvc"
+                                               required>
                                     </div>
                                 </div>
 
@@ -96,8 +101,11 @@
                                 Selecionar outro método de pagamento
                             </button>
                         </h2>
-                        <form class="mt-6" action="{{ route('shop.checkout.payment', ['addressId' => $address->id, 'payment_method' => 'boleto']) }}" method="POST">
+                        <form class="mt-6"
+                              action="{{ route('shop.checkout.payment', ['addressId' => $address->id, 'paymentMethodId' => $boletoId]) }}"
+                              method="POST">
                             @csrf
+                            @method('POST')
                             <div class="row mb-3">
                                 <div class="col-6">
                                     <label for="name" class="form-label">Nome completo</label>
@@ -112,12 +120,21 @@
                                 </div>
                             </div>
 
-                            <button type="submit"
-                                    class="btn btn-success">
+                            <button type="submit" class="btn btn-success">
                                 Pagar R$ <span class="fw-bold">{{ session()->get('totalCartPrice') }}</span>
                             </button>
                         </form>
                     </div>
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
             </section>
         </div>

@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class, // 1 Admin, 2 User w/o Addresses
             AddressSeeder::class, // Admin with address
             ProductSeeder::class, // Products with categories
+            PaymentMethodsSeeder::class,
         ]);
     }
 }

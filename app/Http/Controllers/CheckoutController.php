@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CheckoutRequest;
 use App\Models\Address;
+use App\Models\PaymentMethod;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +40,8 @@ class CheckoutController extends Controller
 
         return view('shop.checkout.payment', [
             'address' => Address::find($addressId),
+            'boletoId' => PaymentMethod::where('name', 'boleto')->first()->id,
+            'creditCardId' => PaymentMethod::where('name', 'credit_card')->first()->id,
         ]);
     }
 
@@ -48,11 +51,21 @@ class CheckoutController extends Controller
      */
     public function payment(CheckoutRequest $request)
     {
-        // TODO Receive payment data and send mail that payment is being processed.
+        $reqData = $request->validated();
 
+        $paymentMethod = PaymentMethod::find($reqData['paymentMethodId'])->name;
+
+        // TODO Send mail that payment is being processed.
+
+        if ($paymentMethod == 'credit_card') {
+            // TODO: implement credit card payment
+        }
+
+        if ($paymentMethod == 'boleto') {
+            // TODO: implement boleto payment
+        }
 
         // TODO Send mail that payment was successful or not.
-
-
+        dd($reqData);
     }
 }
