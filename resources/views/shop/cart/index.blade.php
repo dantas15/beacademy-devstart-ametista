@@ -52,6 +52,8 @@
 
                 <h2>Total: R$ <span class="fw-bold">{{ session()->get('totalCartPrice') }}</span></h2>
 
+                <a class="btn btn-success" href="{{ route('shop.checkout.selectAddress') }}">Finalizar pedido</a>
+
             @else
                 <div class="alert alert-info">
                     Nenhum produto no carrinho.

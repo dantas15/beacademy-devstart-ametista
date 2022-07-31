@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CartRequest;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -24,7 +25,7 @@ class CartController extends Controller
      * Store a product in the cart
      *
      * @param CartRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -66,7 +67,7 @@ class CartController extends Controller
      * Remove a product from the cart
      *
      * @param CartRequest $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
