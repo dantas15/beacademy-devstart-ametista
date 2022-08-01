@@ -11,9 +11,7 @@ class AdminControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Admin default route should return admin.index view
-     *
-     * @return void
+     * @test Admin default route should return admin.index view
      */
     public function test_admin_should_enter_admin_page()
     {
@@ -23,4 +21,17 @@ class AdminControllerTest extends TestCase
 
         $response->assertViewIs('admin.index');
     }
+
+    /**
+     * @test Admin should be able to see all orders
+     */
+    public function test_admin_should_see_all_orders()
+    {
+        $user = User::factory()->create(['is_admin' => 1]);
+
+        $response = $this->actingAs($user)->get('/admin/orders');
+
+        $response->assertViewIs('admin.orders.index');
+    }
+
 }

@@ -26,44 +26,48 @@ class CheckoutRequest extends FormRequest
      */
     public function rules()
     {
-
-        if (!$this->addressId) {
-            return redirect()->route('shop.checkout.select-address')->with('error', 'Selecione um endereço válido');
-        }
-
         $rules = [
             'paymentMethodId' => [
                 'required',
             ],
         ];
 
-        if (PaymentMethod::find($this->paymentMethodId)->name == 'credit_card') {
-            $rules['email'] = [
-                'required',
-            ];
-            $rules['name'] = [
-                'required',
-            ];
-            $rules['creditNumber'] = [
-                'required',
-            ];
-            $rules['expDate'] = [
-                'required',
-            ];
-            $rules['cvc'] = [
-                'required',
-            ];
-        }
+        $paymentMethod = PaymentMethod::find($this->paymentMethodId);
 
-        if (PaymentMethod::find($this->paymentMethodId)->name == 'boleto') {
-            $rules['document_id'] = [
-                'required',
-                Rule::exists('users', 'document_id'),
-            ];
-            $rules['name'] = [
-                'required',
-                Rule::exists('users', 'name'),
-            ];
+        if ($paymentMethod != null) {
+
+            if ($paymentMethod->name == 'credit_card') {
+                $rules['email'] = [
+                    'required',
+                ];
+                $rules['name'] = [
+                    'required',
+                ];
+                $rules['creditNumber'] = [
+                    'required',
+                ];
+                $rules['expDate'] = [
+                    'required',
+                ];
+                $rules['cvc'] = [
+                    'required',
+                ];
+            }
+
+            if ($paymentMethod->name == 'boleto') {
+                $rules['document_id'] = [
+                    'required',
+                    Rule::exists('users', 'document_id'),
+                ];
+                $rules['name'] = [
+                    'required',
+                    Rule::exists('users', 'name'),
+                ];
+            }
+
+            if (!$this->addressId) {
+                redirect()->route('shop.checkout.selectAddress')->with('error', 'Selecione um endereço válido');
+            }
         }
 
         return $rules;

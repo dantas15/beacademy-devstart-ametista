@@ -15,21 +15,17 @@ class AuthenticatedUserControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     *  Test if user is authenticated and redirect to login page if not.
-     *
-     * @return void
+     * @test Not authenticated User should be redirected to login page.
      */
-    public function test_user_should_be_authenticated()
+    public function test_not_authenticated_user_should_be_redirected_to_login_page()
     {
         $this->get('/me')->assertRedirect('login');
     }
 
     /**
-     * Test if user is authenticated and redirect to "Me".
-     *
-     * @return void
+     * @test Authenticated User should be redirected "/me".
      */
-    public function test_user_should_be_authenticated_and_redirect_to_me()
+    public function test_authenticated_user_should_be_redirected_to_me()
     {
         $user = User::factory()->create();
 
@@ -37,11 +33,19 @@ class AuthenticatedUserControllerTest extends TestCase
     }
 
     /**
-     * Test update user info.
-     *
-     * @return void
+     * @test Authenticated User should be able to see its orders.
      */
-    public function test_user_should_be_authenticated_and_update_info()
+    public function test_authenticated_user_should_be_able_to_see_its_orders()
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get(route('me.orders'))->assertViewIs('me.orders.index');
+    }
+
+    /**
+     * @test User can update user info.
+     */
+    public function test_user_can_update_user_info()
     {
         $toBeUpdatedData = [
             'name' => 'Cleber',
@@ -62,11 +66,9 @@ class AuthenticatedUserControllerTest extends TestCase
     }
 
     /**
-     * Test user can see its addresses.
-     *
-     * @return void
+     * @test User can see its addresses.
      */
-    public function test_user_should_be_see_its_addresses()
+    public function test_user_can_see_its_addresses()
     {
         $address = Address::factory()->create();
         $user = $address->user;
@@ -75,11 +77,9 @@ class AuthenticatedUserControllerTest extends TestCase
     }
 
     /**
-     * Test user should access create new address form.
-     *
-     * @return void
+     * @test User can access create new address form.
      */
-    public function test_user_should_access_create_new_address_form()
+    public function test_user_can_access_create_new_address_form()
     {
         $user = User::factory()->create();
 
@@ -87,9 +87,7 @@ class AuthenticatedUserControllerTest extends TestCase
     }
 
     /**
-     * Test user can create new address.
-     *
-     * @return void
+     * @test User can create new address
      */
     public function test_user_can_create_new_address()
     {
@@ -113,9 +111,7 @@ class AuthenticatedUserControllerTest extends TestCase
     }
 
     /**
-     * Test user can not access edit other user's addres form.
-     *
-     * @return void
+     * @test User can not access edit other user's address form.
      */
     public function test_user_can_not_see_other_user_addresses_form()
     {
@@ -126,9 +122,7 @@ class AuthenticatedUserControllerTest extends TestCase
     }
 
     /**
-     * Test user can see edit address form.
-     *
-     * @return void
+     * @test User can see edit address form.
      */
     public function test_user_can_see_edit_address_form()
     {
@@ -142,9 +136,7 @@ class AuthenticatedUserControllerTest extends TestCase
     }
 
     /**
-     * Test user can update address.
-     *
-     * @return void
+     * @test User can update address info.
      */
     public function test_user_can_update_address()
     {
@@ -186,9 +178,7 @@ class AuthenticatedUserControllerTest extends TestCase
     }
 
     /**
-     * Test user can not update other user's address.
-     *
-     * @return void
+     * @test User can not update other user's address.
      */
     public function test_user_can_not_update_other_user_address()
     {
@@ -226,9 +216,7 @@ class AuthenticatedUserControllerTest extends TestCase
     }
 
     /**
-     * Test user can delete its address.
-     *
-     * @return void
+     * @test User can delete its address.
      */
     public function test_user_can_delete_its_address()
     {
@@ -242,9 +230,7 @@ class AuthenticatedUserControllerTest extends TestCase
     }
 
     /**
-     * Test user can not delete other user's address.
-     *
-     * @return void
+     * @test User can not delete other user's address.
      */
     public function test_user_can_not_delete_other_user_address()
     {
