@@ -46,31 +46,10 @@
 
         <div class="row" >
             <div class="col-md-12">
-                {!! $products->links() !!}
+                {{ $products->links('pagination::bootstrap-5') }}
             </div>
         </div>
 
-        <!--
-        <div class="row" >
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="pg-total">
-                            Total: <b>{{ $products->total()  }}</b>
-                        </div>
-                    </div>
-                    <div class="col-md-7 pull-right pg-render">
-                        {!! $products->appends( array() )->render() !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-        -->
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script>
-        $('.shadow-sm').hide();
-    </script>
+    
 
 @endsection
