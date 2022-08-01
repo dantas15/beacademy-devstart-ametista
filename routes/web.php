@@ -53,6 +53,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [AuthenticatedUserController::class, 'index'])->name('index');
         Route::put('/', [AuthenticatedUserController::class, 'update'])->name('update');
 
+        Route::get('/orders', [AuthenticatedUserController::class, 'orders'])->name('orders');
+
         Route::prefix('addresses')->name('addresses.')->group(function () {
             Route::get('/', [AuthenticatedUserController::class, 'addresses'])->name('index');
 
@@ -67,6 +69,8 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('admin')->name('admin.')->middleware('auth.admin')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
+
+        Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
 
         Route::prefix('products')->name('products.')->group(function () {
             Route::get('/', [ProductController::class, 'index'])->name('index');
