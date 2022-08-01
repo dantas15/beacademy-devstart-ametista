@@ -63,7 +63,7 @@ class CartController extends Controller
         });
 
         session()->put('cart', $cart);
-        session()->put('totalCartPrice', $totalCartPrice);
+        session()->put('totalCartPrice', number_format($totalCartPrice, 2, '.', ''));
 
         return redirect()->back()->with('success', 'Produto adicionado com sucesso!');
     }
@@ -114,7 +114,7 @@ class CartController extends Controller
         });
 
         session()->put('cart', $cart);
-        session()->put('totalCartPrice', $totalCartPrice);
+        session()->put('totalCartPrice', number_format($totalCartPrice, 2, '.', ''));
 
         return redirect()->back()->with('success', 'Produto removido com sucesso!');
     }
