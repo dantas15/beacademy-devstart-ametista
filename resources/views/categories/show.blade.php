@@ -48,10 +48,6 @@
             </div>
         </div>
     </div>
-    <div class="row" >
-            <div class="col-md-12">
-                {{ $products->links('pagination::bootstrap-5') }}
-            </div>
-        </div>
+    
 
 @endsection
