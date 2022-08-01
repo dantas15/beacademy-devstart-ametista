@@ -2,6 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
+    HomeController,
+    CartController,
+    CheckoutController,
+    ShopController,
     UserController,
     AddressController,
     CategoryController,
@@ -21,9 +25,26 @@ use App\Http\Controllers\{
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('index');
+Route::get('/', [HomeController::class, 'index'])->name('index');
+
+Route::prefix('shop')->name('shop.')->group(function () {
+    Route::get('/', [ShopController::class, 'index'])->name('index');
+
+    Route::prefix('cart')->name('cart.')->group(function () {
+        Route::get('/', [CartController::class, 'index'])->name('index');
+        Route::post('/', [CartController::class, 'store'])->name('store');
+        Route::delete('/clear', [CartController::class, 'clearCart'])->name('clear');
+        Route::delete('/{productId}/{amount}', [CartController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('checkout')->name('checkout.')->middleware('auth')->group(function () {
+        Route::get('/address', [CheckoutController::class, 'selectAddress'])->name('selectAddress');
+
+        Route::get('/{addressId}', [CheckoutController::class, 'paymentForm'])->name('paymentForm');
+
+        Route::post('/', [CheckoutController::class, 'payment'])->name('payment');
+    });
+});
 
 Auth::routes(); // Login, Register, Logout
 
@@ -31,6 +52,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('me')->name('me.')->group(function () {
         Route::get('/', [AuthenticatedUserController::class, 'index'])->name('index');
         Route::put('/', [AuthenticatedUserController::class, 'update'])->name('update');
+
+        Route::get('/orders', [AuthenticatedUserController::class, 'orders'])->name('orders');
 
         Route::prefix('addresses')->name('addresses.')->group(function () {
             Route::get('/', [AuthenticatedUserController::class, 'addresses'])->name('index');
@@ -47,6 +70,8 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->name('admin.')->middleware('auth.admin')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
 
+        Route::get('/orders', [AdminController::class, 'orders'])->name('orders');
+
         Route::prefix('products')->name('products.')->group(function () {
             Route::get('/', [ProductController::class, 'index'])->name('index');
             Route::get('/create', [ProductController::class, 'create'])->name('create');
@@ -59,7 +84,6 @@ Route::middleware('auth')->group(function () {
             Route::get('/{product}/edit', [ProductController::class, 'edit'])->name('edit');
             Route::put('/{id}', [ProductController::class, 'update'])->name('update');
         });
-
         Route::prefix('categories')->name('categories.')->group(function () {
             Route::get('/', [CategoryController::class, 'index'])->name('index');
             Route::get('/create', [CategoryController::class, 'create'])->name('create');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddressRequest;
 use App\Http\Requests\UserRequest;
 use App\Models\Address;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\View;
@@ -33,6 +34,13 @@ class AuthenticatedUserController extends Controller
     public function index()
     {
         return view('me.index', ['user' => User::find(Auth::user()->getAuthIdentifier())]);
+    }
+
+    public function orders()
+    {
+        return view('me.orders.index', [
+            'orders' => Order::where('user_id', Auth::user()->getAuthIdentifier())->orderBy('created_at', 'desc')->paginate(10)
+        ]);
     }
 
     /**

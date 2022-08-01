@@ -12,6 +12,11 @@
                 Endereços
             </a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('me.orders') }}">
+                Pedidos
+            </a>
+        </li>
     </ul>
 
     <h2 class="mt-2">Endereços cadastrados</h2>
