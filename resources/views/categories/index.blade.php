@@ -23,7 +23,11 @@
             @endforeach
         </tbody>
     </table>
-
+    <div class="row" >
+            <div class="col-md-12">
+                {{ $categories->links('pagination::bootstrap-5') }}
+            </div>
+        </div>
 
 @endsection
 
