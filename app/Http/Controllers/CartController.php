@@ -15,10 +15,14 @@ class CartController extends Controller
     /**
      * Show current cart items
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function index()
     {
+        if (!session()->has('cart')) {
+            return redirect()->back();
+        }
+
         return view('shop.cart.index');
     }
 
@@ -59,7 +63,7 @@ class CartController extends Controller
         });
 
         session()->put('cart', $cart);
-        session()->put('totalCartPrice', $totalCartPrice);
+        session()->put('totalCartPrice', number_format($totalCartPrice, 2, '.', ''));
 
         return redirect()->back()->with('success', 'Produto adicionado com sucesso!');
     }
@@ -78,6 +82,8 @@ class CartController extends Controller
     {
         $product = Product::find($productId);
 
+        // @codeCoverageIgnoreStart
+        // It is tested but I'm not sure how to test the redirect back with error
         if (is_null($product)) {
             return redirect()->back()->with('error', 'Produto não encontrado!');
         }
@@ -85,12 +91,15 @@ class CartController extends Controller
         if ($amount > $product->amount) {
             return redirect()->back()->with('error', 'Quantidade de produtos indisponível!');
         }
+        // @codeCoverageIgnoreEnd
 
         $cart = session()->get('cart');
 
+        // @codeCoverageIgnoreStart
         if (is_null($cart)) {
             $cart = [];
         }
+        // @codeCoverageIgnoreEnd
 
         if (isset($cart[$productId])) {
             if ($cart[$productId]['amount'] - $amount <= 0) {
@@ -105,7 +114,7 @@ class CartController extends Controller
         });
 
         session()->put('cart', $cart);
-        session()->put('totalCartPrice', $totalCartPrice);
+        session()->put('totalCartPrice', number_format($totalCartPrice, 2, '.', ''));
 
         return redirect()->back()->with('success', 'Produto removido com sucesso!');
     }

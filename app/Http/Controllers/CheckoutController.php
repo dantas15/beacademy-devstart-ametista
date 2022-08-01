@@ -6,6 +6,7 @@ use App\Http\Requests\CheckoutRequest;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\OrderProduct;
+use App\Models\OrderStatus;
 use App\Models\PaymentMethod;
 use App\Models\Product;
 use Illuminate\Contracts\View\View;
@@ -13,6 +14,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 class CheckoutController extends Controller
 {
@@ -51,7 +54,9 @@ class CheckoutController extends Controller
 
     /**
      * @param CheckoutRequest $request
-     * @return
+     * @return View|RedirectResponse
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     public function payment(CheckoutRequest $request)
     {
@@ -59,7 +64,7 @@ class CheckoutController extends Controller
         $paymentMethod = PaymentMethod::find($reqData['paymentMethodId']);
 
         if (!$paymentMethod) {
-            return redirect()->route('shop.checkout.paymentForm', $reqData['addressId'])->with('error', 'Selecione um método de pagamento válido');
+            return redirect()->route('shop.checkout.paymentForm', $request->addressId)->with('error', 'Selecione um método de pagamento válido');
         }
 
         $address = Address::find($request->addressId);
@@ -73,7 +78,7 @@ class CheckoutController extends Controller
             'address_id' => $request->addressId,
             'complete_address' => $completeAddress,
             'total_price' => (float)session()->get('totalCartPrice'),
-            'status_id' => 1,
+            'status_id' => OrderStatus::where('status', 'pending')->first()->id,
         ]);
 
         // Create OrderProduct for each product in session()->get('cart')
@@ -138,7 +143,7 @@ class CheckoutController extends Controller
         if ($paymentWasApproved) {
             // TODO Send mail if payment was successful.
 
-            $order->status_id = 2;
+            $order->status_id = OrderStatus::where('status', 'approved')->first()->id;
             $order->save();
 
             session()->put('cart', []);
@@ -148,7 +153,7 @@ class CheckoutController extends Controller
         } else {
             // TODO Send mail if payment was refused.
 
-            $order->status_id = 3;
+            $order->status_id = OrderStatus::where('status', 'refused')->first()->id;
             $order->save();
 
             // Adding the amount of products in stock back to the cart
