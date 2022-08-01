@@ -33,7 +33,8 @@ Route::prefix('shop')->name('shop.')->group(function () {
     Route::prefix('cart')->name('cart.')->group(function () {
         Route::get('/', [CartController::class, 'index'])->name('index');
         Route::post('/', [CartController::class, 'store'])->name('store');
-        Route::delete('/', [CartController::class, 'destroy'])->name('destroy');
+        Route::delete('/clear', [CartController::class, 'clearCart'])->name('clear');
+        Route::delete('/{productId}/{amount}', [CartController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('checkout')->name('checkout.')->middleware('auth')->group(function () {

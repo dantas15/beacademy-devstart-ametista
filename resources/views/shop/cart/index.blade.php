@@ -10,7 +10,17 @@
             @endif
 
             @if(session()->get('cart') != null)
-                <h2>Produtos no carrinho</h2>
+                <div class="d-flex justify-content-between">
+                    <h2>Produtos no carrinho</h2>
+                    <form
+                        action="{{ route('shop.cart.clear') }}"
+                        method="Post"
+                    >
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Limpar carrinho</button>
+                    </form>
+                </div>
 
                 <hr/>
 

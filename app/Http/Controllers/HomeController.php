@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::all()->take(8);
+        $products = Product::where('amount', '>', 0)->take(8);
 
         return view('welcome', [
             'products' => $products,

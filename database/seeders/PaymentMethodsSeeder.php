@@ -17,9 +17,11 @@ class PaymentMethodsSeeder extends Seeder
     {
         PaymentMethod::create([
             'name' => 'credit_card',
+            'api_type' => 'card',
         ]);
         PaymentMethod::create([
             'name' => 'boleto',
+            'api_type' => 'ticket'
         ]);
     }
 }

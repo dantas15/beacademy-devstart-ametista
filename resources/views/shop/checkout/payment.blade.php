@@ -72,7 +72,7 @@
 
                                 <div class="row mb-3">
                                     <div class="col-6">
-                                        <label for="expDate" class="form-label">Data de expedição</label>
+                                        <label for="expDate" class="form-label">Data de expedição (MM/AA)</label>
                                         <input type="month" class="form-control" id="expDate" name="expDate" required>
                                     </div>
 
