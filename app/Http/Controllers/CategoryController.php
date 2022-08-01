@@ -57,19 +57,24 @@ class CategoryController extends Controller
      * @param int $id
      * @return Response
      */
-//    public function show($id)
-//    {
-//        //
-//    }
 
+    public function show($id)
+    {
+        $category = Category::find($id);
+        if (is_null($category)) {
+            return abort(404);
+        }
+        return view('categories.show', compact('category'));
+    }
     /**
      * Show the form for editing the specified resource.
      *
      * @param Category $category
      * @return View
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
+        $category = Category::find($id);
         return view('categories.edit', compact('category'));
     }
 
@@ -99,9 +104,10 @@ class CategoryController extends Controller
      * @param Category $category
      * @return RedirectResponse
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
+        $category = Category::find($id);
         $category->delete();
-        return redirect()->route('admin.categories.index')->with('success', 'category deletado com sucesso');
+        return redirect()->route('admin.categories.index')->with('success', 'categoria deletada com sucesso');
     }
 }

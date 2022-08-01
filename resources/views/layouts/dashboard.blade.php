@@ -44,6 +44,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.categories.index') }}"
+                       class="nav-link {{ Request::is('admin/categories*') ? 'active' : 'text-white' }}">
+                        Categorias
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('admin.products.index') }}"
                        class="nav-link {{ Request::is('admin/products*') ? 'active' : 'text-white' }}">
                         Produtos

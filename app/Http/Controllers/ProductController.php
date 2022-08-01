@@ -93,7 +93,6 @@ class ProductController extends Controller
 
         return view('products.show', [
             'product' => $product,
-            'addresses' => $product->addresses,
         ]);
     }
 

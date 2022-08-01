@@ -11,9 +11,9 @@
 </ul>
 <hr class="mt-0 mb-4">
 <div class="card mb-4">
-    <!-- <div class="card-header">Informações principais</div> -->
+    <div class="card-header">Informações principais</div>
     <div class="card-body">
-        <form action="{{ route('admin.products.update', $product->id) }}" method="post">
+        <form action="{{ route('admin.products.update', $product->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="mb-3">
