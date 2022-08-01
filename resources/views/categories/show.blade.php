@@ -20,7 +20,7 @@
         <a href="javascript:void(0)" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#destroyModal">
             Remover
         </a>
-        <a href="{{ route('admin.categories.edit', ['id' => $category->id]) }}" class="btn btn-warning">Editar</a>
+        <a href="{{ route('admin.categories.edit',$category->id) }}" class="btn btn-warning">Editar</a>
     </div>
 
     <div class="modal fade" id="destroyModal" tabindex="-1" aria-labelledby="destroyModalLabel" aria-hidden="true">
@@ -34,8 +34,8 @@
                     Esta categoria será excluída
                 </div>
                 <div class="modal-footer">
-                    <form action="{{ route('admin.categories.destroy', ['id' => $category->id]) }}" method="post">
-                        @csrf
+                    <form action="{{ route('admin.categories.destroy', $category->id ) }}" method="post">
+                        @csrf 
                         @method('DELETE')
                         <button type="submit" class="btn btn-warning">
                             Excluir
@@ -48,6 +48,4 @@
             </div>
         </div>
     </div>
-    
-
 @endsection
