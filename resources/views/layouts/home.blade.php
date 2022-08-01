@@ -31,12 +31,31 @@
         <div class="collapse navbar-collapse" id="main-navbar">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link {{ Request::is('/') ? 'active' : '' }}"
-                       href="{{ route('index') }}">Página incial</a>
+                    <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="{{ route('index') }}">
+                        Página inicial
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {{ Request::is('shop') ? 'active' : '' }}" href="{{ route('shop.index') }}">
+                        Produtos
+                    </a>
                 </li>
             </ul>
 
             <ul class="navbar-nav ms-auto">
+                @if(session()->get('cart') != null)
+                    <li class="nav-auto me-4">
+                        <a class="nav-link {{ Request::is('shop/cart*') ? 'active' : '' }} position-relative"
+                           href="{{ route('shop.cart.index') }}">
+                            <span>Carrinho</span>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {{ count(session()->get('cart')) }}
+                            </span>
+                        </a>
+                    </li>
+                @endif
+
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))
@@ -58,7 +77,8 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item {{ Request::is('me*') ? 'active' : '' }}" href="{{ route('me.index') }}">
+                            <a class="dropdown-item {{ Request::is('me*') ? 'active' : '' }}"
+                               href="{{ route('me.index') }}">
                                 Meus dados
                             </a>
 
@@ -86,6 +106,7 @@
 </nav>
 <main class="w-100 bg-light">
     <div class="d-flex flex-nowrap min-vh-100">
+        @yield('header')
         <div class="my-5 flex-grow-1">
             <div class="container-sm bg-body">
                 @yield('content')
