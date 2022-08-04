@@ -47,6 +47,13 @@ class CartController extends Controller
         }
 
         if (isset($cart[$productData['productId']])) {
+            $prodAmount = $cart[$productData['productId']]['amount'];
+            $prodAmount += $productData['amount'];
+
+            if ($prodAmount > $product->amount) {
+                return redirect()->back()->with('error', 'Quantidade de produtos indisponível!');
+            }
+
             $cart[$productData['productId']]['amount'] += $productData['amount'];
         } else {
             $cart[$productData['productId']] = [
@@ -127,6 +134,6 @@ class CartController extends Controller
         session()->forget('cart');
         session()->forget('totalCartPrice');
 
-        return redirect()->back()->with('success', 'Carrinho limpo com sucesso!');
+        return redirect()->route('shop.index')->with('success', 'Carrinho limpo com sucesso!');
     }
 }

@@ -42,6 +42,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">{{ $product->name }}</h5>
                                     <p class="card-text">{{ $product->description }}</p>
+                                    <p class="card-text fw-bold">R$ {{ $product->sale_price }}</p>
                                     <form
                                         action="{{ route('shop.cart.store', ['productId' => $product->id, 'amount' => 1]) }}"
                                         method="post">
