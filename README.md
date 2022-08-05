@@ -81,12 +81,10 @@ composer install
 ## Integrantes do grupo :)
 
 -   [Contribuições](https://github.com/gusgalote/beacademy-devstart-ametista/graphs/contributors)
-
 -   [@AndersemReis](https://github.com/andersemreis)
 -   [@avillagabriella](https://github.com/avillagabriella)
 -   [@gusgalote](https://www.github.com/gusgalote)
 -   [@marcelovins](https://github.com/marcelovins)
--
 
 ## Techs
 
