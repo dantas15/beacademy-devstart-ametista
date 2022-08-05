@@ -79,8 +79,8 @@ composer install
     - Senão, é só ligar o servidor embutido do PHP com `php artisan serve`
 
 ## Integrantes do grupo :)
+Veja todas as [contribuições](https://github.com/gusgalote/beacademy-devstart-ametista/graphs/contributors)!
 
--   [Contribuições](https://github.com/gusgalote/beacademy-devstart-ametista/graphs/contributors)
 -   [@AndersemReis](https://github.com/andersemreis)
 -   [@avillagabriella](https://github.com/avillagabriella)
 -   [@gusgalote](https://www.github.com/gusgalote)
