@@ -14,12 +14,13 @@
                 </div>
             @endif
 
+            <h2>Selecione um endereço</h2>
+            
             @if(count($addresses) <= 0)
                 <span class="fs-5 text-muted">Nenhum endereço encontrado!</span>
             @endif
 
             @if (count($addresses) > 0)
-                <h2>Selecione um endereço</h2>
             @endif
             @foreach ($addresses as $address)
                 <div class="card mb-4" role="link">

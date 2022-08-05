@@ -67,7 +67,7 @@ class ProductController extends Controller
             $originalname = $request->file('main_photo')->getClientOriginalName();
             $fileName = md5($originalname . date('Y-m-d H:i:s')) . '.' . $extension;
             $request->file('main_photo')->move($destinationPath, $fileName);
-            $product->main_photo = $destinationPath . '/' . $fileName;
+            $product->main_photo = '/' . $destinationPath . '/' . $fileName;
         }
 
         $product->save();

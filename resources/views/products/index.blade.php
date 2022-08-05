@@ -32,7 +32,7 @@
                             <td>{{ number_format($product->cost_price, 2,',','.') }}</td>
                             <td>{{ number_format($product->sale_price, 2,',','.') }}</td>
                             <td>
-                                <img src="/{{ $product->main_photo }}" width="100">
+                                <img src="{{ $product->main_photo }}" width="100">
                             </td>
                             <td><a href="{{ route('admin.products.show', $product->id) }}" class="btn btn-info text-white">Visualizar</a></td>
                         </tr>
@@ -40,7 +40,7 @@
                 </tbody>
 
             </table>
-            
+
             </div>
         </div>
 
@@ -50,6 +50,6 @@
             </div>
         </div>
 
-    
+
 
 @endsection

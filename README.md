@@ -4,7 +4,7 @@
   <a href="#requisitos-para-executar">Requisitos</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#como-executar">Como executar</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#autores">Autores</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#tecnologias">Tecnologias</a>
+  <a href="#techs">Tecnologias</a>
 </p>
 
 -   [Regras de negócio](https://difficult-baryonyx-f99.notion.site/Projeto-Empresarial-1ef26572b7b34692bc77b53d7141eda4)
@@ -78,17 +78,17 @@ composer install
     - Se estiver utilizando o Sail acesse: http://localhost
     - Senão, é só ligar o servidor embutido do PHP com `php artisan serve`
 
-## Autores
+## Integrantes do grupo :)
+
+-   [Contribuições](https://github.com/gusgalote/beacademy-devstart-ametista/graphs/contributors)
 
 -   [@AndersemReis](https://github.com/andersemreis)
 -   [@avillagabriella](https://github.com/avillagabriella)
--   [@gabrielcoder](https://github.com/gabrielcoder)
--   [@minosdavi](https://github.com/Ton-devstart)
 -   [@gusgalote](https://www.github.com/gusgalote)
 -   [@marcelovins](https://github.com/marcelovins)
--   [@Ton-devstart](https://github.com/minosdavi)
+-
 
-## Tecnologias
+## Techs
 
 -   [PHP](https://www.php.net/)
 -   [Composer](https://getcomposer.org/)
